@@ -1,112 +1,104 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+/* eslint-disable prettier/prettier */
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { EventRegister } from 'react-native-event-listeners';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import SplashScreen from 'react-native-splash-screen';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+import CountPadScreen from './screens/CountPad';
+import SaveCountScreen from './screens/SaveCount';
+import StorageDisplayScreen from './screens/GetCounts';
+import CounterSettingsScreen from './screens/CounterSettings';
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+/** 
+// symbol polyfills
+global.Symbol = require('core-js/es6/symbol');
+require('core-js/fn/symbol/iterator');
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+// collection fn polyfills
+require('core-js/fn/map');
+require('core-js/fn/set');
+require('core-js/fn/array/find');
+*/
+
+const RootStack = createStackNavigator();
+
+const App = () => {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  useEffect(() => {
+    getData();
+    SplashScreen.hide();
+  }, []);
+
+  const SETTINGSKEY = '@AppSettingsKEY';
+
+  const getData = async () => {
+    const resp = await AsyncStorage.getItem(SETTINGSKEY);
+    const data = await JSON.parse(resp);
+    if (data !== null) {
+      setIsDarkTheme(data);
+    }
+    console.log(data);
+    //updateListData(data);
+    //setLoading(false);
   };
 
+  const appTheme = isDarkTheme ? DarkTheme : DefaultTheme;
+  // If isDarkTheme == false then use DarkTheme
+  // Else if isDarkTheme == true then use DefaultTheme
+
+
+  useEffect(() => {
+    let eventListener = EventRegister.addEventListener(
+      'changeThemeEvent',
+      data => {
+        setIsDarkTheme(data);
+      },
+    );
+    return () => {
+      EventRegister.removeEventListener(eventListener);
+    };
+  }, []);
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer theme={appTheme}>
+      <RootStack.Navigator>
+        <RootStack.Group>
+          <RootStack.Screen
+            name="Back to Counter"
+            component={CountPadScreen}
+            options={{ headerShown: false }}
+          />
+        </RootStack.Group>
+        <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+          <RootStack.Screen
+            name="Saved"
+            component={SaveCountScreen}
+            options={{ title: 'Count Saved' }}
+          />
+        </RootStack.Group>
+        <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+          <RootStack.Screen
+            name="GetCounts"
+            component={StorageDisplayScreen}
+            options={{ title: 'Saved Counts' }}
+          />
+        </RootStack.Group>
+        <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+          <RootStack.Screen
+            name="SettingsScreen"
+            component={CounterSettingsScreen}
+            initialParams={appTheme}
+            options={{ title: 'Counter Settings' }}
+          />
+        </RootStack.Group>
+      </RootStack.Navigator>
+    </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
