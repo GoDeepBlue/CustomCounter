@@ -32,18 +32,12 @@ const GetCountsScreen = (props) => {
           //updateListData([])
           //console.log('listdata IS null:', listData);
         }
-        
         setLoading(false);
     };
 
     useEffect(() => {
         AsyncStorage.setItem(STORAGEKEY, JSON.stringify(listData));
     }, [listData]);
-    //useEffect called on every Component Render with a Condition
-    //  1st argument is setItem() (what to run)
-    //  2nd argument is toDoList(when to run).
-    //  Every time editHandler() function is invoked and toDoList is changed, 
-    //  AsyncStorage will be updated with new toDoList.
 
     const closeRow = (rowMap, rowKey) => {
         if (rowMap[rowKey]) {

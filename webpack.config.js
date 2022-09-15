@@ -12,6 +12,9 @@ const compileNodeModules = [
   'react-native-swipe-list-view',
   'react-native-keyboard-aware-scroll-view',
   'react-native-vector-icons',
+  '@react-navigation/native',
+  '@react-navigation/stack',
+  '@react-native-async-storage/async-storage',
 ].map((moduleName) => path.resolve(appDirectory, `node_modules/${moduleName}`));
 
 const babelLoaderConfiguration = {
@@ -59,8 +62,8 @@ const imageLoaderConfiguration = {
 
 const ttfLoaderConfiguration = {
   test: /\.ttf$/,
-  loader: "url-loader", // or directly file-loader
-  include: path.resolve(__dirname, "node_modules/react-native-vector-icons"),
+  loader: 'url-loader', // or directly file-loader
+  include: path.resolve(__dirname, 'node_modules/react-native-vector-icons'),
 };
 
 module.exports = {
@@ -69,8 +72,7 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(appDirectory, 'dist'),
-    publicPath: '/',
+    path: path.join(__dirname, 'public'),
     clean: true,
   },
   resolve: {

@@ -1,16 +1,13 @@
 /* eslint-disable prettier/prettier */
 import { Dimensions, StyleSheet } from 'react-native';
 
-
 const styles = StyleSheet.create({
     topToolbar: {
-
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 10,
         marginLeft: 10,
         marginRight: 10,
-
     },
     topToolbarIcons: {
         fontSize: 30,

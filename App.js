@@ -7,7 +7,6 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createStackNavigator } from '@react-navigation/stack';
 import { EventRegister } from 'react-native-event-listeners';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SplashScreen from 'react-native-splash-screen';
 
 import CountPadScreen from './screens/CountPad';
 import SaveCountScreen from './screens/SaveCount';
@@ -20,7 +19,6 @@ const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   useEffect(() => {
     getData();
-    SplashScreen.hide();
   }, []);
 
   const SETTINGSKEY = '@AppSettingsKEY';
@@ -58,7 +56,7 @@ const App = () => {
       <RootStack.Navigator>
         <RootStack.Group>
           <RootStack.Screen
-            name="Back to Counter"
+            name="Custom Counter"
             component={CountPadScreen}
             options={{ headerShown: false }}
           />
