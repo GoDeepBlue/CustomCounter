@@ -25,7 +25,14 @@ const GetCountsScreen = (props) => {
     const getData = async () => {
         const resp = await AsyncStorage.getItem(STORAGEKEY);
         const data = await JSON.parse(resp);
-        updateListData(data);
+        if (data !== null) {
+          updateListData(data);
+          //console.log('listdata NOT null:', listData);
+        } else {
+          //updateListData([])
+          //console.log('listdata IS null:', listData);
+        }
+        
         setLoading(false);
     };
 
@@ -272,7 +279,7 @@ const GetCountsScreen = (props) => {
             />
             {
                 (() => {
-                    if (listData.length === 0) {
+                    if (listData.length === 0 || listData === null) {
                         return <Text style={{ textAlign: 'center', marginTop: 40, color: colors.text }}> There are no saved Counts. </Text>;
                     } else {
                         return <Button title="Clear All Counts" onPress={() => showConfirmDelete()}>
