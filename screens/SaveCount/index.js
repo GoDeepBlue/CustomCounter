@@ -28,7 +28,7 @@ const SaveCountScreen = ({route, navigation}) => {
     const data = await JSON.parse(resp);
     updateListData(data);
     setLoading(false);
-    console.log('getData completed');
+    //console.log('getData completed');
   };
 
   useEffect(() => {
@@ -70,14 +70,14 @@ const SaveCountScreen = ({route, navigation}) => {
 
     updateListData(newListData);
 
-    console.log(JSON.stringify(newListItem));
-    console.log(JSON.stringify(newListData));
+    // console.log(JSON.stringify(newListItem));
+    // console.log(JSON.stringify(newListData));
     try {
       await AsyncStorage.setItem(STORAGEKEY, JSON.stringify(newListData));
     } catch (error) {
-      console.log('Error:' + error);
+      console.warn('Error:' + error);
     }
-    console.log('Async called');
+    //console.log('Async called');
   };
 
   return (

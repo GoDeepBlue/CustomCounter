@@ -1,3 +1,12 @@
+
+========
+Changes:
+
+Updated RN to .67
+Fixed bug in GetCounts when count is null
+Fixed link in Product Feedback
+======== 
+
 This config / setup enables running react web to an existing react native project.
 
 https://arry.medium.com/how-to-add-react-native-web-to-an-existing-react-native-project-eb98c952c12f

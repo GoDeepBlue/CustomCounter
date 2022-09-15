@@ -15,8 +15,8 @@ const CounterSettingsScreen = (props) => {
     useEffect(() => { whatIsAppTheme(); }, []);
 
     function whatIsAppTheme() {
-        console.log('whatIsAppTheme: ' + appTheme.dark);
-        console.log(appTheme);
+        // console.log('whatIsAppTheme: ' + appTheme.dark);
+        // console.log(appTheme);
         if (appTheme.dark === true) {
             setIsDarkTheme(true);
         } else {
@@ -35,8 +35,8 @@ const CounterSettingsScreen = (props) => {
     };
 
     function storeData(themeVal) {
-        console.log('storeData called');
-        console.log(JSON.stringify(isDarkTheme));
+        // console.log('storeData called');
+        // console.log(JSON.stringify(isDarkTheme));
         AsyncStorage.setItem(SETTINGSKEY, JSON.stringify(themeVal));
     }
 
@@ -71,7 +71,7 @@ const CounterSettingsScreen = (props) => {
                         },
                         styles.button,
                     ]}
-                    onPress={() => { Linking.openURL('https://www.enterdeepblue.com/product-feedback/'); }}
+                    onPress={() => { Linking.openURL('https://www.enterdeepblue.com/contact.html'); }}
                 >
                     <Text style={styles.textButton}>
                         Product Feedback

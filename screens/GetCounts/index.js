@@ -60,23 +60,23 @@ const GetCountsScreen = (props) => {
     };
 
     const onRowDidOpen = rowKey => {
-        console.log('This row opened', rowKey);
+        //console.log('This row opened', rowKey);
     };
 
     const onLeftActionStatusChange = rowKey => {
-        console.log('onLeftActionStatusChange', rowKey);
+        //console.log('onLeftActionStatusChange', rowKey);
     };
 
     const onRightActionStatusChange = rowKey => {
-        console.log('onRightActionStatusChange', rowKey);
+        //console.log('onRightActionStatusChange', rowKey);
     };
 
     const onRightAction = rowKey => {
-        console.log('onRightAction', rowKey);
+        //console.log('onRightAction', rowKey);
     };
 
     const onLeftAction = rowKey => {
-        console.log('onLeftAction', rowKey);
+        //console.log('onLeftAction', rowKey);
     };
 
     const VisibleItem = props => {
@@ -254,7 +254,7 @@ const GetCountsScreen = (props) => {
             .then(() => {
                 updateListData([]);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.warn(error));
     };
 
     return (
