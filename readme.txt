@@ -3,6 +3,7 @@
 Changes:
 
 Updated RN to .67
+Added web version
 Fixed bug in GetCounts when count is null
 Fixed link in Product Feedback
 ======== 

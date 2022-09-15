@@ -83,7 +83,6 @@ const SaveCountScreen = ({route, navigation}) => {
   return (
     <View>
       <Text style={[styles.title, {color: colors.text}]}>Details Saved</Text>
-
       <View style={styles.row}>
         <Text style={[styles.titleCell, {color: colors.text}]}>Count:</Text>
         <Text style={{marginLeft: 60, color: colors.text}}> {count} </Text>

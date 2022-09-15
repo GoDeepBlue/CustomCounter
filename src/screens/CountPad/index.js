@@ -101,15 +101,15 @@ const CountPadScreen = ({navigation}) => {
             style={({pressed}) => [
               {
                 width: pressed
-                  ? Dimensions.get('screen').width - 25
-                  : Dimensions.get('screen').width - 20,
+                  ? Dimensions.get('window').width - 25
+                  : Dimensions.get('window').width - 20,
                 height: pressed
                   ? Platform.OS === 'ios'
-                    ? Dimensions.get('screen').height - 305
-                    : Dimensions.get('screen').height - 365
+                    ? Dimensions.get('window').height - 305
+                    : Dimensions.get('window').height - 365
                   : Platform.OS === 'ios'
-                  ? Dimensions.get('screen').height - 300
-                  : Dimensions.get('screen').height - 360,
+                  ? Dimensions.get('window').height - 300
+                  : Dimensions.get('window').height - 360,
               },
               styles.countPadButton,
             ]}

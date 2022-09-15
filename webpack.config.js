@@ -23,7 +23,7 @@ const babelLoaderConfiguration = {
   include: [
     path.resolve(__dirname, 'index.web.js'), // Entry to your application
     path.resolve(__dirname, 'App.js'), // Change this to your main App file
-    path.resolve(__dirname, 'screens'),
+    path.resolve(__dirname, 'src'),
 
     // path.resolve(__dirname, 'node_modules/react-native-fast-image'),
     ...compileNodeModules,

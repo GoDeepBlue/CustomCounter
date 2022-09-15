@@ -1,19 +1,20 @@
 /* eslint-disable prettier/prettier */
 
-import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
+import { View, Button } from 'react-native';
 
+import 'react-native-gesture-handler';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { EventRegister } from 'react-native-event-listeners';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import CountPadScreen from './screens/CountPad';
-import SaveCountScreen from './screens/SaveCount';
-import StorageDisplayScreen from './screens/GetCounts';
-import CounterSettingsScreen from './screens/CounterSettings';
+import CountPadScreen from './src/screens/CountPad';
+import SaveCountScreen from './src/screens/SaveCount';
+import StorageDisplayScreen from './src/screens/GetCounts';
+import CounterSettingsScreen from './src/screens/CounterSettings';
 
-const RootStack = createStackNavigator();
+const Stack = createStackNavigator();
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -29,15 +30,12 @@ const App = () => {
     if (data !== null) {
       setIsDarkTheme(data);
     }
-    console.log(data);
-    //updateListData(data);
-    //setLoading(false);
+    //console.log(data);
   };
 
   const appTheme = isDarkTheme ? DarkTheme : DefaultTheme;
   // If isDarkTheme == false then use DarkTheme
   // Else if isDarkTheme == true then use DefaultTheme
-
 
   useEffect(() => {
     let eventListener = EventRegister.addEventListener(
@@ -53,37 +51,44 @@ const App = () => {
 
   return (
     <NavigationContainer theme={appTheme}>
-      <RootStack.Navigator>
-        <RootStack.Group>
-          <RootStack.Screen
+      <Stack.Navigator>
+        <Stack.Group>
+          <Stack.Screen
             name="Custom Counter"
             component={CountPadScreen}
             options={{ headerShown: false }}
           />
-        </RootStack.Group>
-        <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-          <RootStack.Screen
+        </Stack.Group>
+        <Stack.Group screenOptions={({navigation}) => ({
+          presentation: 'modal',
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <View style={{marginLeft: 10}}>
+              <Button
+                onPress={() => navigation.goBack()}
+                title="< Back"
+              />
+            </View>
+          ),
+          })}>
+          <Stack.Screen
             name="Saved"
             component={SaveCountScreen}
             options={{ title: 'Count Saved' }}
           />
-        </RootStack.Group>
-        <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-          <RootStack.Screen
+          <Stack.Screen
             name="GetCounts"
             component={StorageDisplayScreen}
             options={{ title: 'Saved Counts' }}
           />
-        </RootStack.Group>
-        <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-          <RootStack.Screen
+          <Stack.Screen
             name="SettingsScreen"
             component={CounterSettingsScreen}
             initialParams={appTheme}
             options={{ title: 'Counter Settings' }}
           />
-        </RootStack.Group>
-      </RootStack.Navigator>
+        </Stack.Group>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
