@@ -7,6 +7,7 @@ import App from './App';
 
 // Generate required css
 import iconFont from 'react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf';
+import materialIconFont from 'react-native-vector-icons/Fonts/MaterialIcons.ttf';
 import antFont from 'react-native-vector-icons/Fonts/AntDesign.ttf';
 import fontAwesomeFonts from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
 import ioniconsFont from 'react-native-vector-icons/Fonts/Ionicons.ttf';
@@ -27,6 +28,10 @@ const iconFontStyles = `@font-face {
 @font-face {
   src: url(${featherIcons});
   font-family: Feather;
+}
+@font-face {
+  font-family: 'MaterialIcons';
+  src: url(${materialIconFont}) format('truetype');
 }
 @font-face {
   src: url(${antFont});

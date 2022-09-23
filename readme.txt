@@ -1,6 +1,11 @@
-
+Folders remaining
+-- Change SaveCount to use Selected Folders
+-- Change GetCounts to use the Selected Folders
+-- Validate Folder input name
 ========
 Changes:
+Added ability to save Counts in different folders
+
 
 Updated RN to .67
 Added web version

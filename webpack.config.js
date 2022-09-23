@@ -15,6 +15,9 @@ const compileNodeModules = [
   '@react-navigation/native',
   '@react-navigation/stack',
   '@react-native-async-storage/async-storage',
+  'react-native-ratings',
+  '@rneui/themed',
+  '@rneui/base',
 ].map((moduleName) => path.resolve(appDirectory, `node_modules/${moduleName}`));
 
 const babelLoaderConfiguration = {

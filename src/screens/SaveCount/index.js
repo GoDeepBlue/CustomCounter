@@ -6,19 +6,26 @@ import {useTheme} from '@react-navigation/native';
 import styles from './styles';
 
 const SaveCountScreen = ({route, navigation}) => {
+
   const [listData, updateListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const {colors} = useTheme();
 
-  const count = route.params;
+  const {count, saveToFolder} = route.params;
   const dateInfo = getFormatedDate();
   const key = getKey();
 
   const STORAGEKEY = '@StorageKEY';
 
   useEffect(() => {
+    console.log(' -- SaveCountScreen -- Save2Folder =>', saveToFolder);
     getData();
   }, []);
+
+  useEffect(() => {
+    storeData();
+  }, [loading]);
+
   //https://reactjs.org/docs/hooks-rules.html
   //https://dev.to/spukas/4-ways-to-useeffect-pf6
   //useEffect called when component Mounts
@@ -28,12 +35,8 @@ const SaveCountScreen = ({route, navigation}) => {
     const data = await JSON.parse(resp);
     updateListData(data);
     setLoading(false);
-    //console.log('getData completed');
+    console.log(' -- SaveCount - getData -- Data=>', data);
   };
-
-  useEffect(() => {
-    storeData();
-  }, [loading]);
 
   function getKey() {
     const d = new Date();
@@ -63,20 +66,61 @@ const SaveCountScreen = ({route, navigation}) => {
   }
 
   const storeData = async () => {
-    //let numKeys = listData.length + 1;
+    //save2Folder = {"name": "Folder-0", "subfolder": ""}
+    //listData = data stored already
+
     let newListElement = {key: key, count: count, countDate: dateInfo};
     let newListItem = [newListElement];
-    let newListData = [...listData, ...newListItem];
 
-    updateListData(newListData);
+    var newData;
 
-    // console.log(JSON.stringify(newListItem));
-    // console.log(JSON.stringify(newListData));
-    try {
-      await AsyncStorage.setItem(STORAGEKEY, JSON.stringify(newListData));
-    } catch (error) {
-      console.warn('Error:' + error);
-    }
+    console.log('file: index.js ~ line 77 ~ storeData ~ listData', listData);
+    // const index = listData.findIndex(
+    //   folder => folder.name === saveToFolder.name,
+    // );
+    // let index = -1;
+    // let result = listData.hasOwnProperty('name');
+    // if (result) {
+    //   //result true if name property exists
+    //   index = listData.findIndex(folder => folder.name === saveToFolder.name);
+    // }
+    // if (index < 0) {
+    //   //If 'name' property does not exist && if folder name not found
+    //   if (saveToFolder.subfolder === '') {
+    //     //If no subfolder
+    //     newData = {
+    //       name: saveToFolder.name,
+    //       countData: newListItem,
+    //     };
+    //   } else {
+    //     //There is a subfolder
+    //     newData = {
+    //       name: saveToFolder.name,
+    //       subfolders: {
+    //         name: saveToFolder.subfolder,
+    //         countData: newListItem,
+    //       },
+    //     };
+    //   }
+    // }
+
+    //folders.name
+    // if subfolders === '' 
+    //    add newListItem to countData
+    // else
+    //    folders.name.subfolders.name add newListItem to countData
+
+
+    let newListData = [...listData, ...newData];
+
+    //updateListData(newListData);
+
+    console.log(' -- SaveCount - storeData -- newListData=>', newListData);
+    // try {
+    //   await AsyncStorage.setItem(STORAGEKEY, JSON.stringify(newListData));
+    // } catch (error) {
+    //   console.warn('Error:' + error);
+    // }
     //console.log('Async called');
   };
 
@@ -86,6 +130,13 @@ const SaveCountScreen = ({route, navigation}) => {
       <View style={styles.row}>
         <Text style={[styles.titleCell, {color: colors.text}]}>Count:</Text>
         <Text style={{marginLeft: 60, color: colors.text}}> {count} </Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={[styles.titleCell, {color: colors.text}]}>Folder:</Text>
+        <Text style={{marginLeft: 60, color: colors.text}}>
+          {saveToFolder.name}
+          {saveToFolder.subfolder !== '' && ' | ' + saveToFolder.subfolder}
+        </Text>
       </View>
       <View style={styles.row}>
         <Text style={[styles.titleCell, {color: colors.text}]}>

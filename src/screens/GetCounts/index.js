@@ -3,16 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableHighlight, TouchableOpacity, Animated, Button, Alert } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
-//import { DataTable } from 'react-native-paper';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import styles from './styles';
-
-
 import { SwipeListView } from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const GetCountsScreen = (props) => {
+import styles from './styles';
 
+const GetCountsScreen = ({route, navigation}) => {
+    const {saveToFolder} = route.params;
     const [listData, updateListData] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -20,13 +19,18 @@ const GetCountsScreen = (props) => {
 
     const STORAGEKEY = "@StorageKEY";
 
-    useEffect(() => { getData(); }, []);
+    useEffect(() => { 
+      getData();
+      console.log('GetCountsScreen ~ saveToFolder', saveToFolder);
+      
+    }, []);
 
     const getData = async () => {
         const resp = await AsyncStorage.getItem(STORAGEKEY);
         const data = await JSON.parse(resp);
         if (data !== null) {
           updateListData(data);
+          console.log('GetCounts ~ getData ~ data', data);
           //console.log('listdata NOT null:', listData);
         } else {
           //updateListData([])

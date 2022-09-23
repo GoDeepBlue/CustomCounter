@@ -7,8 +7,8 @@ import 'react-native-gesture-handler';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { EventRegister } from 'react-native-event-listeners';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import * as AsyncStorageFunctions from './src/components/AsyncStorageFunctions';
 import CountPadScreen from './src/screens/CountPad';
 import SaveCountScreen from './src/screens/SaveCount';
 import StorageDisplayScreen from './src/screens/GetCounts';
@@ -18,19 +18,23 @@ const Stack = createStackNavigator();
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [saveToFolder, setSaveToFolder] = useState('Default');
+
   useEffect(() => {
     getData();
   }, []);
 
-  const SETTINGSKEY = '@AppSettingsKEY';
-
   const getData = async () => {
-    const resp = await AsyncStorage.getItem(SETTINGSKEY);
-    const data = await JSON.parse(resp);
-    if (data !== null) {
-      setIsDarkTheme(data);
+    const theme = await AsyncStorageFunctions.getThemeSetting();
+    if (theme !== null) {
+      setIsDarkTheme(theme);
+      console.log('file: App.js ~ line 29 ~ getData ~ theme', theme);
     }
-    //console.log(data);
+    const saveFolder = await AsyncStorageFunctions.getSaveToFolder();
+    if (saveFolder !== null) {
+      setSaveToFolder(saveFolder);
+      console.log('file: App.js ~ line 37 ~ getData ~ saveFolder', saveFolder);
+    }
   };
 
   const appTheme = isDarkTheme ? DarkTheme : DefaultTheme;
@@ -42,6 +46,18 @@ const App = () => {
       'changeThemeEvent',
       data => {
         setIsDarkTheme(data);
+      },
+    );
+    return () => {
+      EventRegister.removeEventListener(eventListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    let eventListener = EventRegister.addEventListener(
+      'changeFolderEvent',
+      data => {
+        setSaveToFolder(data);
       },
     );
     return () => {
@@ -65,7 +81,7 @@ const App = () => {
           headerLeft: () => (
             <View style={{marginLeft: 10}}>
               <Button
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate('Custom Counter', {saveToFolder})}
                 title="< Back"
               />
             </View>
@@ -73,11 +89,13 @@ const App = () => {
           })}>
           <Stack.Screen
             name="Saved"
+            initialParams={saveToFolder}
             component={SaveCountScreen}
             options={{ title: 'Count Saved' }}
           />
           <Stack.Screen
             name="GetCounts"
+            initialParams={saveToFolder}
             component={StorageDisplayScreen}
             options={{ title: 'Saved Counts' }}
           />
