@@ -67,60 +67,20 @@ const SaveCountScreen = ({route, navigation}) => {
 
   const storeData = async () => {
     //save2Folder = {"name": "Folder-0", "subfolder": ""}
-    //listData = data stored already
-
+    //listData = 
     let newListElement = {key: key, count: count, countDate: dateInfo};
     let newListItem = [newListElement];
 
-    var newData;
+    let newListData = [...listData, ...newListItem];
 
-    console.log('file: index.js ~ line 77 ~ storeData ~ listData', listData);
-    // const index = listData.findIndex(
-    //   folder => folder.name === saveToFolder.name,
-    // );
-    // let index = -1;
-    // let result = listData.hasOwnProperty('name');
-    // if (result) {
-    //   //result true if name property exists
-    //   index = listData.findIndex(folder => folder.name === saveToFolder.name);
-    // }
-    // if (index < 0) {
-    //   //If 'name' property does not exist && if folder name not found
-    //   if (saveToFolder.subfolder === '') {
-    //     //If no subfolder
-    //     newData = {
-    //       name: saveToFolder.name,
-    //       countData: newListItem,
-    //     };
-    //   } else {
-    //     //There is a subfolder
-    //     newData = {
-    //       name: saveToFolder.name,
-    //       subfolders: {
-    //         name: saveToFolder.subfolder,
-    //         countData: newListItem,
-    //       },
-    //     };
-    //   }
-    // }
-
-    //folders.name
-    // if subfolders === '' 
-    //    add newListItem to countData
-    // else
-    //    folders.name.subfolders.name add newListItem to countData
-
-
-    let newListData = [...listData, ...newData];
-
-    //updateListData(newListData);
+    updateListData(newListData);
 
     console.log(' -- SaveCount - storeData -- newListData=>', newListData);
-    // try {
-    //   await AsyncStorage.setItem(STORAGEKEY, JSON.stringify(newListData));
-    // } catch (error) {
-    //   console.warn('Error:' + error);
-    // }
+    try {
+      await AsyncStorage.setItem(STORAGEKEY, JSON.stringify(newListData));
+    } catch (error) {
+      console.warn('Error:' + error);
+    }
     //console.log('Async called');
   };
 
