@@ -30,6 +30,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
+  folderTextSettingValue: {
+    fontSize: 15,
+    paddingTop: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   button: {
     borderRadius: 8,
     padding: 10,

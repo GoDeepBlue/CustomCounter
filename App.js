@@ -8,6 +8,8 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createStackNavigator } from '@react-navigation/stack';
 import { EventRegister } from 'react-native-event-listeners';
 
+import CountersDataProvider from './src/context/CountersDataProvider';
+import {useCountersData} from './src/context/CountersDataProvider';
 import * as AsyncStorageFunctions from './src/components/AsyncStorageFunctions';
 import CountPadScreen from './src/screens/CountPad';
 import SaveCountScreen from './src/screens/SaveCount';
@@ -19,6 +21,7 @@ const Stack = createStackNavigator();
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [saveToFolder, setSaveToFolder] = useState('Default');
+  const {getDataLocal} = useCountersData();
 
   useEffect(() => {
     getData();
@@ -34,7 +37,14 @@ const App = () => {
     if (saveFolder !== null) {
       setSaveToFolder(saveFolder);
       console.log('file: App.js ~ line 37 ~ getData ~ saveFolder', saveFolder);
+    } else {
+      //save2Folder = {"name": "Folder-0", "subfolder": ""}
+      setSaveToFolder({
+        name: 'Default',
+        subfolder: '',
+      });
     }
+    getDataLocal();
   };
 
   const appTheme = isDarkTheme ? DarkTheme : DefaultTheme;
@@ -67,46 +77,48 @@ const App = () => {
 
   return (
     <NavigationContainer theme={appTheme}>
-      <Stack.Navigator>
-        <Stack.Group>
-          <Stack.Screen
-            name="Custom Counter"
-            component={CountPadScreen}
-            options={{ headerShown: false }}
-          />
-        </Stack.Group>
-        <Stack.Group screenOptions={({navigation}) => ({
-          presentation: 'modal',
-          headerTitleAlign: 'center',
-          headerLeft: () => (
-            <View style={{marginLeft: 10}}>
-              <Button
-                onPress={() => navigation.navigate('Custom Counter', {saveToFolder})}
-                title="< Back"
-              />
-            </View>
-          ),
-          })}>
-          <Stack.Screen
-            name="Saved"
-            initialParams={saveToFolder}
-            component={SaveCountScreen}
-            options={{ title: 'Count Saved' }}
-          />
-          <Stack.Screen
-            name="GetCounts"
-            initialParams={saveToFolder}
-            component={StorageDisplayScreen}
-            options={{ title: 'Saved Counts' }}
-          />
-          <Stack.Screen
-            name="SettingsScreen"
-            component={CounterSettingsScreen}
-            initialParams={appTheme}
-            options={{ title: 'Counter Settings' }}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
+      <CountersDataProvider>
+        <Stack.Navigator>
+          <Stack.Group>
+            <Stack.Screen
+              name="Custom Counter"
+              component={CountPadScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Group>
+          <Stack.Group screenOptions={({navigation}) => ({
+            presentation: 'modal',
+            headerTitleAlign: 'center',
+            headerLeft: () => (
+              <View style={{marginLeft: 10}}>
+                <Button
+                  onPress={() => navigation.navigate('Custom Counter', {saveToFolder})}
+                  title="< Back"
+                />
+              </View>
+            ),
+            })}>
+            <Stack.Screen
+              name="Saved"
+              initialParams={saveToFolder}
+              component={SaveCountScreen}
+              options={{ title: 'Count Saved' }}
+            />
+            <Stack.Screen
+              name="GetCounts"
+              initialParams={saveToFolder}
+              component={StorageDisplayScreen}
+              options={{ title: 'Saved Counts' }}
+            />
+            <Stack.Screen
+              name="SettingsScreen"
+              component={CounterSettingsScreen}
+              initialParams={appTheme}
+              options={{ title: 'Counter Settings' }}
+            />
+          </Stack.Group>
+        </Stack.Navigator>
+      </CountersDataProvider>
     </NavigationContainer>
   );
 };

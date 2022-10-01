@@ -1,41 +1,44 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as CounterData from '../../components/CountsData';
+
 import {useTheme} from '@react-navigation/native';
 import styles from './styles';
 
 const SaveCountScreen = ({route, navigation}) => {
 
-  const [listData, updateListData] = useState([]);
+  const {count, saveToFolder} = route.params;
+
+  const [listData, setListData] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const {colors} = useTheme();
 
-  const {count, saveToFolder} = route.params;
   const dateInfo = getFormatedDate();
   const key = getKey();
 
-  const STORAGEKEY = '@StorageKEY';
-
   useEffect(() => {
-    console.log(' -- SaveCountScreen -- Save2Folder =>', saveToFolder);
     getData();
   }, []);
 
   useEffect(() => {
     storeData();
-  }, [loading]);
-
-  //https://reactjs.org/docs/hooks-rules.html
-  //https://dev.to/spukas/4-ways-to-useeffect-pf6
-  //useEffect called when component Mounts
+  }, [count, saveToFolder]);
 
   const getData = async () => {
-    const resp = await AsyncStorage.getItem(STORAGEKEY);
-    const data = await JSON.parse(resp);
-    updateListData(data);
+    const data = await CounterData.getCounterData();
+    setListData(data);
     setLoading(false);
-    console.log(' -- SaveCount - getData -- Data=>', data);
+  };
+
+  const storeData = async () => {
+    //save2Folder = {"name": "Folder-0", "subfolder": ""}
+    let newListElement = {key: key, count: count, countDate: dateInfo};
+    let newListItem = [newListElement];
+    const updatedList = await CounterData.AddCount(newListItem, saveToFolder);
+    setListData(updatedList);
+    //console.log(' -- SaveCount - storeData -- newListData=>', updatedList);
   };
 
   function getKey() {
@@ -65,23 +68,15 @@ const SaveCountScreen = ({route, navigation}) => {
     return fullDateTime;
   }
 
-  const storeData = async () => {
-    //save2Folder = {"name": "Folder-0", "subfolder": ""}
-    //listData = 
-    let newListElement = {key: key, count: count, countDate: dateInfo};
-    let newListItem = [newListElement];
-
-    let newListData = [...listData, ...newListItem];
-
-    updateListData(newListData);
-
-    console.log(' -- SaveCount - storeData -- newListData=>', newListData);
-    try {
-      await AsyncStorage.setItem(STORAGEKEY, JSON.stringify(newListData));
-    } catch (error) {
-      console.warn('Error:' + error);
+  const renderFolderDisplay = () => {
+    let displayFolder = 'Default';
+    if (saveToFolder.name !== '' && saveToFolder.name !== undefined) {
+      displayFolder = saveToFolder.name;
+      if (saveToFolder.subfolder !== '') {
+        displayFolder = displayFolder + ' | ' + saveToFolder.subfolder;
+      }
     }
-    //console.log('Async called');
+    return displayFolder;
   };
 
   return (
@@ -94,8 +89,7 @@ const SaveCountScreen = ({route, navigation}) => {
       <View style={styles.row}>
         <Text style={[styles.titleCell, {color: colors.text}]}>Folder:</Text>
         <Text style={{marginLeft: 60, color: colors.text}}>
-          {saveToFolder.name}
-          {saveToFolder.subfolder !== '' && ' | ' + saveToFolder.subfolder}
+          {renderFolderDisplay()}
         </Text>
       </View>
       <View style={styles.row}>

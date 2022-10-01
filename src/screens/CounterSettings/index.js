@@ -27,58 +27,66 @@ const CounterSettingsScreen = ({route}) => {
     const appTheme = useTheme();
     let colors = appTheme.colors;
 
-    const initialState = [{
-        name: 'Folder-0',
-        countData: [
-          {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
-          {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
-          {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
-          {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
-          {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171},
-        ],
-        subfolders: [
-          {
-            name: 'subfolder-0a',
-            countData: [
-              {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
-              {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
-              {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
-              {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
-              {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171}
-            ],
-          },
-          {
-            name: 'subfolder-0b',
-            countData: [
-              {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
-              {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
-              {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
-              {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
-              {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171},
-            ],
-          },
-        ],
-      },
+    // const initialState = [{
+    //     name: 'Folder-0',
+    //     countData: [
+    //       {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
+    //       {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
+    //       {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
+    //       {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
+    //       {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171},
+    //     ],
+    //     subfolders: [
+    //       {
+    //         name: 'subfolder-0a',
+    //         countData: [
+    //           {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
+    //           {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
+    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
+    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
+    //           {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171}
+    //         ],
+    //       },
+    //       {
+    //         name: 'subfolder-0b',
+    //         countData: [
+    //           {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
+    //           {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
+    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
+    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
+    //           {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171},
+    //         ],
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     name: 'Folder-1',
+    //   },
+    //   {
+    //     name: 'Folder-2',
+    //     subfolders: [
+    //       {
+    //         name: 'subfolder-2a',
+    //       },
+    //       {
+    //         name: 'subfolder-2b',
+    //       },
+    //       {
+    //         name: 'subfolder-2c',
+    //       },
+    //     ],
+    //   },
+    // ];
+
+    const emptyFolder = [
       {
-        name: 'Folder-1',
-      },
-      {
-        name: 'Folder-2',
-        subfolders: [
-          {
-            name: 'subfolder-2a',
-          },
-          {
-            name: 'subfolder-2b',
-          },
-          {
-            name: 'subfolder-2c',
-          },
-        ],
+        name: 'Default',
+        countData: [],
+        subfolders: [],
       },
     ];
 
-    const [folders, setFolders] = useState(initialState);
+    const [folders, setFolders] = useState(emptyFolder);
     //Used for storing the folder structure and folders count data
     const [createFolderIn, setCreateFolderIn] = useState('');
     //Used to store name of folder to create new folder within or TOP for Top level
@@ -92,9 +100,17 @@ const CounterSettingsScreen = ({route}) => {
     //Used to set the Sub Level folder to display in "Save Counts To:"
 
     useEffect(() => { 
+      console.log(' ~ CounterSettings ~ useEffect called ~ ');
       whatIsAppTheme();
       getStoredSaveToFolder();
+      getStoredCountData();
     }, []);
+
+    useEffect(() => { 
+      console.log(' ~ CounterSettings ~ useEffect called ~ folders changed ~ ');
+      saveStoredCountData();
+      console.log(' ~~ updated folders:', folders);
+    }, [folders]);
 
     function whatIsAppTheme() {
         // console.log('whatIsAppTheme: ' + appTheme.dark);
@@ -112,13 +128,30 @@ const CounterSettingsScreen = ({route}) => {
         AsyncStorageFunctions.storeSettings(!isDarkTheme);
     };
 
+    const saveStoredCountData = async () => {
+      const resp = await AsyncStorageFunctions.saveCountData(folders);
+    };
+
+    const getStoredCountData = async () => {
+      const data = await AsyncStorageFunctions.getCountData();
+      console.log(' ~~ SaveCount ~ line 33 ~ data:', data);
+      setFolders(data);
+    };
+
     const getStoredSaveToFolder = async () => {
       const saveFolder = await AsyncStorageFunctions.getSaveToFolder();
       if (saveFolder !== null) {
+        Alert.alert('Check if folder exists in data');
         setSaveToFolder(saveFolder);
         setTopFolderSelected(saveFolder?.name);
         setSubFolderSelected(saveFolder?.subfolder);
         console.log('file: App.js ~ line 37 ~ getData ~ saveFolder', saveFolder);
+      } else {
+        setSaveToFolder({
+          name: 'Default',
+          subfolder: '',
+        });
+        setFolders(emptyFolder);
       }
     };
 
@@ -247,22 +280,23 @@ const CounterSettingsScreen = ({route}) => {
                 content={
                   <View style={{flexDirection: 'row'}}>
                     <Text style={[styles.folderTextSetting, { color: colors.text }]}>
-                      Counts Folder:
+                      Save Counts To:
                     </Text>
-                    <Text style={[styles.folderTextSetting, { color: colors.text }]}>
+                    <Text style={[styles.folderTextSettingValue, { color: colors.text }]}>
                       {topFolderSelected}
                     </Text>
                     {subFolderSelected !== '' && (
-                      <Text style={[styles.folderTextSetting, { color: colors.text }]}>
-                      |  {subFolderSelected}
+                      <Text style={[styles.folderTextSettingValue, { color: colors.text }]}>
+                      { ' | ' + subFolderSelected}
                       </Text>
                     )}
                   </View>
                 }
-                isExpanded={topExpanded}
-                onPress={() => {
-                  setTopExpanded(!topExpanded);
-                }}
+                isExpanded={true}
+                noIcon={true}
+                // onPress={() => {
+                //   setTopExpanded(!topExpanded);
+                // }}
               >
               {showInput && (
                 <InputAddFolder
@@ -273,7 +307,7 @@ const CounterSettingsScreen = ({route}) => {
                   setCreateFolderIn={setCreateFolderIn}
                 />
               )}
-                {folders.map((aFolder, i) => (
+                {folders !== null && folders.map((aFolder, i) => (
                   <SubfolderList
                     aFolderTree={aFolder}
                     onDeleteSubFolder={onDeleteSubFolder}
@@ -294,7 +328,7 @@ const CounterSettingsScreen = ({route}) => {
                   bottomDivider>
                   <Icon name='create-new-folder' color={colors.text} size={25}/>
                   <ListItem.Content>
-                    <ListItem.Title style={[styles.textSetting, { color: colors.text }]}>
+                    <ListItem.Title style={[styles.folderTextSettingValue, { color: colors.text }]}>
                       Create top level folder
                     </ListItem.Title>
                   </ListItem.Content>

@@ -1,7 +1,10 @@
 Folders remaining
 -- Change SaveCount to use Selected Folders
 -- Change GetCounts to use the Selected Folders
+---- only one count is saved
 -- Validate Folder input name
+-- CCountSettings
+--- heck folder exists before setting save to folder
 ========
 Changes:
 Added ability to save Counts in different folders

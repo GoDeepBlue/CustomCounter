@@ -18,8 +18,7 @@ const SubfolderList = ({aFolderTree, i, onDeleteSubFolder, onDeleteTopFolder, on
   // setShowInput = setter method to display TextInput for creating new Folder
   // setCreateFolderIn = setter method to hold state variable of which folder to create new folder in
   // ---------------------------------------
-  console.log('SubfolderList Called -- aFolderVar=', aFolderTree);
-
+  
   const [subExpanded, setSubExpanded] = useState(false);
   const appTheme = useTheme();
   let colors = appTheme.colors;
@@ -45,7 +44,7 @@ const SubfolderList = ({aFolderTree, i, onDeleteSubFolder, onDeleteTopFolder, on
             buttonStyle={{minHeight: '100%', backgroundColor: 'red'}}
           />
         )}>
-        <Icon name="folder" style={{paddingLeft: 20}} color={colors.text} />
+        <Icon name="folder" style={{paddingLeft: 20}} color={'#ffd600'} />
         <ListItem.Content>
           <ListItem.Title
             onPress={() => {
@@ -55,7 +54,7 @@ const SubfolderList = ({aFolderTree, i, onDeleteSubFolder, onDeleteTopFolder, on
               };
               onSaveToFolder(newFolder);
             }}
-            style={{color: colors.text}}>
+            style={[styles.folderTextSettingValue, {color: colors.text}]}>
             {aSubFolder}
           </ListItem.Title>
         </ListItem.Content>
@@ -70,10 +69,10 @@ const SubfolderList = ({aFolderTree, i, onDeleteSubFolder, onDeleteTopFolder, on
       containerStyle={{backgroundColor: colors.background}}
       content={
         <>
-          <Icon name="folder" color={colors.text} />
-          <Text style={[styles.folderTextSetting, {color: colors.text}]}>
+          <Icon name="folder" color={'#ffd600'} />
+          <Text style={{color: colors.text}}>
             {/* aFolderTree is the top-level folder name */}
-            {aFolderTree.name}
+            {' ' + aFolderTree.name}
           </Text>
         </>
       }
@@ -100,7 +99,10 @@ const SubfolderList = ({aFolderTree, i, onDeleteSubFolder, onDeleteTopFolder, on
           size={25}
         />
         <ListItem.Content>
-          <ListItem.Title>Create new subfolder</ListItem.Title>
+          <ListItem.Title
+          style={[styles.folderTextSettingValue, {color: colors.text}]}>
+            Create new subfolder
+          </ListItem.Title>
         </ListItem.Content>
       </ListItem>
       <ListItem
@@ -120,7 +122,8 @@ const SubfolderList = ({aFolderTree, i, onDeleteSubFolder, onDeleteTopFolder, on
           size={25}
         />
         <ListItem.Content>
-          <ListItem.Title style={{color: colors.text}}>
+          <ListItem.Title
+            style={[styles.folderTextSettingValue, {color: colors.text}]}>
             Save to {aFolderTree.name} folder
           </ListItem.Title>
         </ListItem.Content>
@@ -136,7 +139,8 @@ const SubfolderList = ({aFolderTree, i, onDeleteSubFolder, onDeleteTopFolder, on
           size={25}
         />
         <ListItem.Content>
-          <ListItem.Title style={{color: colors.text}}>
+          <ListItem.Title
+            style={[styles.folderTextSettingValue, {color: colors.text}]}>
             Delete {aFolderTree.name}
           </ListItem.Title>
         </ListItem.Content>

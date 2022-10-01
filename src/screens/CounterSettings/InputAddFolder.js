@@ -4,7 +4,6 @@ import {View, Text, TextInput} from 'react-native';
 import {ListItem, Button, Icon} from '@rneui/themed';
 
 import styles from './styles';
-import SubfolderList from './SubfolderList';
 
 const InputAddFolder = ({folders, setFolders, setShowInput, createFolderIn, setCreateFolderIn}) => {
   //Functional Component is used for creating a folder
@@ -17,32 +16,36 @@ const InputAddFolder = ({folders, setFolders, setShowInput, createFolderIn, setC
   // -------------------------------
   const [newFolderName, setNewFolderName] = useState(null);
 
+  //console.log(' ~~ InputAddFolder ~~ folders:', folders);
+
   const AddFolder = () => {
-    // console.log('=================================');
-    // console.log('Folders BEFORE:', folders);
+    console.log('=================================');
+    console.log('Folders BEFORE:', folders);
     const temp = [...folders];
     if (createFolderIn === '' || createFolderIn === 'TOP') {
       //create new top level folder
-      temp.push({name: newFolderName});
+      const newTopFolder = {
+        name: newFolderName,
+        countData: [],
+        subfolders: [],
+      };
+      temp.push(newTopFolder);
       //setFolders(current => [...current, {name: newFolderName}]);
     } else {
       //create new sub level folder
       // console.log('NEW SUB FOLDER in', createFolderIn);
       // console.log('NEW FOLDER:', newFolderName);
-      let index = 0;
-      folders.forEach(element => {
-        //console.log('element.name', element.name);
-        if (element.name === createFolderIn) {
-          //console.log('They are the same');
-          //console.log('HERE', folders[index].name);
-          temp[index].subfolders.push({name: newFolderName});
-          //console.log('NEW TEMP', temp[index]);
-        }
-        index++;
-      });
+      let index = temp.findIndex(folder => folder.name === createFolderIn);
+      console.log('file: InputAddFolder.js ~ line 35 ~ AddFolder ~ index', index);
+
+      const newSubFolder = {
+        name: newFolderName,
+        countData: [],
+      };
+      temp[index].subfolders.push(newSubFolder);
     }
-    // console.log('folders AFTER:', folders);
-    // console.log('=================================');
+    console.log('folders AFTER:', temp);
+    console.log('=================================');
     setFolders(temp);
     setShowInput(false);
   };

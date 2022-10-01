@@ -3,45 +3,93 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableHighlight, TouchableOpacity, Animated, Button, Alert } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as AsyncStorageFunctions from '../../components/AsyncStorageFunctions';
+import * as CounterData from '../../components/CountsData';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from './styles';
 
 const GetCountsScreen = ({route, navigation}) => {
+  
     const {saveToFolder} = route.params;
-    const [listData, updateListData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // saveToFolder is the folder user selected to save data to
+    const [fullCountsData, setFullCountsData] = useState([]);
+    // fullCountsData is entire dataset of all counts for every folder
+    const [listData, setListData] = useState([]);
+    //listData is countData for 'current' saveToFolder
 
+    const [loading, setLoading] = useState(true);
     const { colors } = useTheme();
 
-    const STORAGEKEY = "@StorageKEY";
-
-    useEffect(() => { 
+    useEffect(() => {
       getData();
-      console.log('GetCountsScreen ~ saveToFolder', saveToFolder);
-      
     }, []);
 
+    useEffect(() => {
+        updateStoredData();
+    }, [listData]);
+
     const getData = async () => {
-        const resp = await AsyncStorage.getItem(STORAGEKEY);
-        const data = await JSON.parse(resp);
-        if (data !== null) {
-          updateListData(data);
-          console.log('GetCounts ~ getData ~ data', data);
-          //console.log('listdata NOT null:', listData);
-        } else {
-          //updateListData([])
-          //console.log('listdata IS null:', listData);
-        }
-        setLoading(false);
+
+      const data = await CounterData.GetCountsFromFolder(saveToFolder);
+
+      setListData(data);
+      //update list data for Saved Counts display
+
+      setFullCountsData(data);
+      //store full data retrieved
+      setLoading(false);
     };
 
-    useEffect(() => {
-        AsyncStorage.setItem(STORAGEKEY, JSON.stringify(listData));
-    }, [listData]);
+    const updateStoredData = async () => {
+
+      console.log('~~~~ GetCounts ~ updateStoredData ~ saveToFolder:', saveToFolder);
+      console.log('~~~~ GetCounts ~ updateStoredData ~ listData:', listData);
+      console.log('~~~~ GetCounts ~ updateStoredData ~ fullCountsData:', fullCountsData);
+      // var topIndex;
+      // var subIndex;
+      // //TOP FOLDER SPECIFIED, NO SUBFOLDER - WORKING
+      // if (saveToFolder.name !== '' && saveToFolder.subfolder === '') {
+      //   console.log('saveToFolder.name:', saveToFolder.name);
+      //   console.log('fullCountsData:', fullCountsData);
+      //   topIndex = fullCountsData.findIndex(folder => folder.name === saveToFolder.name);
+      //   // determine if Top Folder exists index is -1 DNE or 0, 1, 2 if Exist
+      //   console.log('file: index.js ~ line 78 ~ updateStoredData ~ topIndex', topIndex);
+      //   if (topIndex >= 0 ) {
+      //     fullCountsData[topIndex].countData = listData;
+      //     console.log('fullCountsData[topIndex].countData', fullCountsData[topIndex].countData);
+      //   }
+      // }
+
+      // //TOP FOLDER & SUB FOLDER SPECIFIED - in-process ...
+      // if (saveToFolder.name !== '' && saveToFolder.subfolder !== '') {
+      //   topIndex = fullCountsData.findIndex(folder => folder.name === saveToFolder.name);
+      //   // determine if Top Folder exists index is -1 DNE or 0, 1, 2 if Exist
+      //   if (topIndex >= 0 ) {
+      //     subIndex = fullCountsData[topIndex].subfolders.findIndex(sub => sub.name === saveToFolder.subfolder);
+      //     console.log('~~ ~~ subIndex', subIndex);
+      //     fullCountsData[topIndex].subfolders[subIndex].countData = listData;
+      //   }
+      // }
+
+      // await AsyncStorageFunctions.saveCountData(fullCountsData);
+    };
+
+    // const getData_old = async () => {
+    //     const resp = await AsyncStorage.getItem(STORAGEKEY);
+    //     const data = await JSON.parse(resp);
+    //     if (data !== null) {
+    //       updateListData(data);
+    //       console.log('GetCounts ~ getData ~ data', data);
+    //       //console.log('listdata NOT null:', listData);
+    //     } else {
+    //       //updateListData([])
+    //       //console.log('listdata IS null:', listData);
+    //     }
+    //     setLoading(false);
+    // };
 
     const closeRow = (rowMap, rowKey) => {
         if (rowMap[rowKey]) {
@@ -54,7 +102,7 @@ const GetCountsScreen = ({route, navigation}) => {
         const newData = [...listData];
         const prevIndex = listData.findIndex(item => item.key === rowKey);
         newData.splice(prevIndex, 1);
-        updateListData(newData);
+        setListData(newData);
     };
 
     const onRowDidOpen = rowKey => {
@@ -244,15 +292,8 @@ const GetCountsScreen = ({route, navigation}) => {
         );
     };
 
-    // clear all todos
     const handleClearAllCounts = () => {
-
-        // Saving to async storage
-        AsyncStorage.setItem(STORAGEKEY, JSON.stringify([]))
-            .then(() => {
-                updateListData([]);
-            })
-            .catch((error) => console.warn(error));
+      setListData([]);
     };
 
     return (
@@ -277,7 +318,7 @@ const GetCountsScreen = ({route, navigation}) => {
             />
             {
                 (() => {
-                    if (listData.length === 0 || listData === null) {
+                    if (listData === null || listData === undefined || listData.length === 0 ) {
                         return <Text style={{ textAlign: 'center', marginTop: 40, color: colors.text }}> There are no saved Counts. </Text>;
                     } else {
                         return <Button title="Clear All Counts" onPress={() => showConfirmDelete()}>
