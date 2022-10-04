@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, Text} from 'react-native';
 
-import * as CounterData from '../../components/CountsData';
+//import * as CounterData from '../../components/CountsData';
+import {DataContext} from '../../context/CountersDataContext';
 
 import {useTheme} from '@react-navigation/native';
 import styles from './styles';
@@ -9,17 +10,19 @@ import styles from './styles';
 const SaveCountScreen = ({route, navigation}) => {
 
   const {count, saveToFolder} = route.params;
-
+  console.log(' ~~ SaveCount ~ count:', count);
+  console.log(' ~~ SaveCount ~ saveToFolder:', saveToFolder);
+  const context = useContext(DataContext);
   const [listData, setListData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const {colors} = useTheme();
 
-  const dateInfo = getFormatedDate();
+  const dateInfo = getFormattedDate();
   const key = getKey();
 
   useEffect(() => {
-    getData();
+    //getData();
   }, []);
 
   useEffect(() => {
@@ -27,18 +30,17 @@ const SaveCountScreen = ({route, navigation}) => {
   }, [count, saveToFolder]);
 
   const getData = async () => {
-    const data = await CounterData.getCounterData();
-    setListData(data);
-    setLoading(false);
+    // const data = await CounterData.getCounterData();
+    // setListData(data);
+    // setLoading(false);
   };
 
-  const storeData = async () => {
+  const storeData = () => {
     //save2Folder = {"name": "Folder-0", "subfolder": ""}
     let newListElement = {key: key, count: count, countDate: dateInfo};
     let newListItem = [newListElement];
-    const updatedList = await CounterData.AddCount(newListItem, saveToFolder);
-    setListData(updatedList);
-    //console.log(' -- SaveCount - storeData -- newListData=>', updatedList);
+    console.log('file: index.js ~ line 42 ~ storeData ~ newListItem', newListItem);
+    context.addCount(newListItem, saveToFolder);
   };
 
   function getKey() {
@@ -51,7 +53,7 @@ const SaveCountScreen = ({route, navigation}) => {
     return formatedKey;
   }
 
-  function getFormatedDate() {
+  function getFormattedDate() {
     const d = new Date();
 
     let options = {

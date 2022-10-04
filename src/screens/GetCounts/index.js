@@ -1,11 +1,10 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, TouchableHighlight, TouchableOpacity, Animated, Button, Alert } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
-//import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as AsyncStorageFunctions from '../../components/AsyncStorageFunctions';
-import * as CounterData from '../../components/CountsData';
+import {DataContext} from '../../context/CountersDataContext';
+//import * as CounterData from '../../components/CountsData';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -14,6 +13,7 @@ import styles from './styles';
 const GetCountsScreen = ({route, navigation}) => {
   
     const {saveToFolder} = route.params;
+    const context = useContext(DataContext);
     // saveToFolder is the folder user selected to save data to
     const [fullCountsData, setFullCountsData] = useState([]);
     // fullCountsData is entire dataset of all counts for every folder
@@ -27,14 +27,15 @@ const GetCountsScreen = ({route, navigation}) => {
       getData();
     }, []);
 
-    useEffect(() => {
-        updateStoredData();
-    }, [listData]);
+    // useEffect(() => {
+    //     updateStoredData();
+    // }, [listData]);
 
     const getData = async () => {
 
-      const data = await CounterData.GetCountsFromFolder(saveToFolder);
-
+      const data = await context.getCountsFromFolder(saveToFolder);
+      console.log('file: GetCounts ~ line 39 ~ getData ~ data', data);
+      console.log('file: GetCounts ~ line 39 ~ getData ~ saveToFolder', saveToFolder);
       setListData(data);
       //update list data for Saved Counts display
 
@@ -43,39 +44,39 @@ const GetCountsScreen = ({route, navigation}) => {
       setLoading(false);
     };
 
-    const updateStoredData = async () => {
+    // const updateStoredData = async () => {
 
-      console.log('~~~~ GetCounts ~ updateStoredData ~ saveToFolder:', saveToFolder);
-      console.log('~~~~ GetCounts ~ updateStoredData ~ listData:', listData);
-      console.log('~~~~ GetCounts ~ updateStoredData ~ fullCountsData:', fullCountsData);
-      // var topIndex;
-      // var subIndex;
-      // //TOP FOLDER SPECIFIED, NO SUBFOLDER - WORKING
-      // if (saveToFolder.name !== '' && saveToFolder.subfolder === '') {
-      //   console.log('saveToFolder.name:', saveToFolder.name);
-      //   console.log('fullCountsData:', fullCountsData);
-      //   topIndex = fullCountsData.findIndex(folder => folder.name === saveToFolder.name);
-      //   // determine if Top Folder exists index is -1 DNE or 0, 1, 2 if Exist
-      //   console.log('file: index.js ~ line 78 ~ updateStoredData ~ topIndex', topIndex);
-      //   if (topIndex >= 0 ) {
-      //     fullCountsData[topIndex].countData = listData;
-      //     console.log('fullCountsData[topIndex].countData', fullCountsData[topIndex].countData);
-      //   }
-      // }
+    //   console.log('~~~~ GetCounts ~ updateStoredData ~ saveToFolder:', saveToFolder);
+    //   console.log('~~~~ GetCounts ~ updateStoredData ~ listData:', listData);
+    //   console.log('~~~~ GetCounts ~ updateStoredData ~ fullCountsData:', fullCountsData);
+    //   // var topIndex;
+    //   // var subIndex;
+    //   // //TOP FOLDER SPECIFIED, NO SUBFOLDER - WORKING
+    //   // if (saveToFolder.name !== '' && saveToFolder.subfolder === '') {
+    //   //   console.log('saveToFolder.name:', saveToFolder.name);
+    //   //   console.log('fullCountsData:', fullCountsData);
+    //   //   topIndex = fullCountsData.findIndex(folder => folder.name === saveToFolder.name);
+    //   //   // determine if Top Folder exists index is -1 DNE or 0, 1, 2 if Exist
+    //   //   console.log('file: index.js ~ line 78 ~ updateStoredData ~ topIndex', topIndex);
+    //   //   if (topIndex >= 0 ) {
+    //   //     fullCountsData[topIndex].countData = listData;
+    //   //     console.log('fullCountsData[topIndex].countData', fullCountsData[topIndex].countData);
+    //   //   }
+    //   // }
 
-      // //TOP FOLDER & SUB FOLDER SPECIFIED - in-process ...
-      // if (saveToFolder.name !== '' && saveToFolder.subfolder !== '') {
-      //   topIndex = fullCountsData.findIndex(folder => folder.name === saveToFolder.name);
-      //   // determine if Top Folder exists index is -1 DNE or 0, 1, 2 if Exist
-      //   if (topIndex >= 0 ) {
-      //     subIndex = fullCountsData[topIndex].subfolders.findIndex(sub => sub.name === saveToFolder.subfolder);
-      //     console.log('~~ ~~ subIndex', subIndex);
-      //     fullCountsData[topIndex].subfolders[subIndex].countData = listData;
-      //   }
-      // }
+    //   // //TOP FOLDER & SUB FOLDER SPECIFIED - in-process ...
+    //   // if (saveToFolder.name !== '' && saveToFolder.subfolder !== '') {
+    //   //   topIndex = fullCountsData.findIndex(folder => folder.name === saveToFolder.name);
+    //   //   // determine if Top Folder exists index is -1 DNE or 0, 1, 2 if Exist
+    //   //   if (topIndex >= 0 ) {
+    //   //     subIndex = fullCountsData[topIndex].subfolders.findIndex(sub => sub.name === saveToFolder.subfolder);
+    //   //     console.log('~~ ~~ subIndex', subIndex);
+    //   //     fullCountsData[topIndex].subfolders[subIndex].countData = listData;
+    //   //   }
+    //   // }
 
-      // await AsyncStorageFunctions.saveCountData(fullCountsData);
-    };
+    //   // await AsyncStorageFunctions.saveCountData(fullCountsData);
+    // };
 
     // const getData_old = async () => {
     //     const resp = await AsyncStorage.getItem(STORAGEKEY);

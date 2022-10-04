@@ -16,27 +16,31 @@ import {getSaveToFolder} from '../../components/AsyncStorageFunctions.js';
 import styles from './styles.js';
 
 const CountPadScreen = ({navigation, route}) => {
-  const [count, setCount] = useState(0);
-  const [saveToFolder, setSaveToFolder] = useState({});
-
-  useEffect(() => {
-    if (route.params?.saveToFolder) {
-      console.log('~~~ saveToFolder CHANGED ~~~', route.params?.saveToFolder);
-      setSaveToFolder(route.params?.saveToFolder);
-    }
-  }, [route.params?.saveToFolder]);
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    const folder = await getSaveToFolder();
-    if (folder !== null) {
-      setSaveToFolder(folder);
-      console.log('file: CountPadScreen ~ line 30 ~ getData ~ folder', folder);
-    }
+  const initialSaveToFolder = {
+    name: 'Default',
+    subfolder: '',
   };
+  const [count, setCount] = useState(0);
+  const [saveToFolder, setSaveToFolder] = useState(initialSaveToFolder);
+
+  // useEffect(() => {
+  //   if (route.params?.saveToFolder) {
+  //     console.log('~~~ saveToFolder CHANGED ~~~', route.params?.saveToFolder);
+  //     setSaveToFolder(route.params?.saveToFolder);
+  //   }
+  // }, [route.params?.saveToFolder]);
+
+  // useEffect(() => {
+  //   getData();
+  // }, []);
+
+  // const getData = async () => {
+  //   const folder = await getSaveToFolder();
+  //   if (folder !== null) {
+  //     setSaveToFolder(folder);
+  //     console.log('file: CountPadScreen ~ line 30 ~ getData ~ folder', folder);
+  //   }
+  // };
 
   function resetCount() {
     setCount(0);
