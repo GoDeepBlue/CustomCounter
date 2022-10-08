@@ -25,7 +25,10 @@ const GetCountsScreen = (props) => {
     const getData = async () => {
         const resp = await AsyncStorage.getItem(STORAGEKEY);
         const data = await JSON.parse(resp);
-        updateListData(data);
+        if (data !== null) {
+          updateListData(data);
+          console.log('GetCounts ~ getData ~ data', data);
+        }
         setLoading(false);
     };
 
