@@ -9,3 +9,10 @@ Features:
 - Send your Counts as a Text or Notes
 - Customize the display
 
+Version History
+
+-- 1.6 -- 
+Added rn version
+Updated RN to .67
+Fixed bug in GetCounts when count is null
+Fixed link in Product Feedback
