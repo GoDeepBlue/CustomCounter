@@ -5,7 +5,7 @@ import {useTheme} from '@react-navigation/native';
 import {EventRegister} from 'react-native-event-listeners';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {SETTINGSKEY} from '../../assets/globals';
+import {SETTINGSKEY} from '../../constants/AsyncStorageKeys';
 import styles from './styles';
 
 const CounterSettingsScreen = () => {

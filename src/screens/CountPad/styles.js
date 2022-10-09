@@ -3,13 +3,11 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     topToolbar: {
-
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 10,
         marginLeft: 10,
         marginRight: 10,
-
     },
     topToolbarIcons: {
         fontSize: 30,
@@ -32,7 +30,7 @@ const styles = StyleSheet.create({
         color: 'grey',
     },
     countPadButton: {
-        marginTop: 60,
+        marginTop: 50,
         alignSelf: 'center',
         //height: (Platform.OS === 'ios') ? Dimensions.get('screen').height - 300 : Dimensions.get('screen').height - 325,
         //width: Dimensions.get('screen').width - 20,     // Sets width slightly smaller then full

@@ -14,7 +14,7 @@ import CountPadScreen from './src/screens/CountPad';
 import SaveCountScreen from './src/screens/SaveCount';
 import StorageDisplayScreen from './src/screens/GetCounts';
 import CounterSettingsScreen from './src/screens/CounterSettings';
-import {SETTINGSKEY} from './src/assets/globals';
+import {SETTINGSKEY} from './src/constants/AsyncStorageKeys';
 
 const RootStack = createStackNavigator();
 

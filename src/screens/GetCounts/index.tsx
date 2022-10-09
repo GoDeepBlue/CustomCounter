@@ -15,7 +15,7 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from './styles';
-import {STORAGEKEY} from '../../assets/globals';
+import {STORAGEKEY} from '../../constants/AsyncStorageKeys';
 
 const GetCountsScreen = () => {
   interface ListData {

@@ -4,7 +4,7 @@ import {View, Text, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTheme} from '@react-navigation/native';
 
-import {STORAGEKEY} from '../../assets/globals';
+import {STORAGEKEY} from '../../constants/AsyncStorageKeys';
 import styles from './styles';
 
 const SaveCountScreen = ({route, navigation}) => {
