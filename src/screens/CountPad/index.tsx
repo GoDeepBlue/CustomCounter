@@ -7,6 +7,8 @@ import {
   Platform,
   Dimensions,
   Pressable,
+  Alert,
+  ShareAction,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -14,8 +16,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import styles from './styles.js';
 
-const CountPadScreen = ({navigation}) => {
-  const [count, setCount] = useState(0);
+const CountPadScreen = ({navigation}: any) => {
+  const [count, setCount] = useState<number>(0);
 
   function resetCount() {
     setCount(0);
@@ -35,20 +37,20 @@ const CountPadScreen = ({navigation}) => {
 
   const shareCounts = async () => {
     try {
-      const result = await Share.share({
+      const result: ShareAction = await Share.share({
         message: 'Here is the count: ' + count,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
           // shared with activity type of result.activityType
-        } else {
-          // shared
         }
       } else if (result.action === Share.dismissedAction) {
         // dismissed
       }
-    } catch (error) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        Alert.alert('Error', error.message);
+      }
     }
   };
 
@@ -97,7 +99,6 @@ const CountPadScreen = ({navigation}) => {
         </View>
         <View>
           <Pressable
-            name="Countpad"
             style={({pressed}) => [
               {
                 width: pressed
