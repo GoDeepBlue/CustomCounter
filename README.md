@@ -11,8 +11,7 @@ Features:
 
 Version History
 
--- 1.6 -- 
-Added rn version
+-- 2.3 -- 
 Updated RN to .67
 Fixed bug in GetCounts when count is null
-Fixed link in Product Feedback
+Fixed Product Feedback link
