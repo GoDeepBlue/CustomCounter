@@ -1,6 +1,6 @@
 import {AppRegistry} from 'react-native';
 import {name as appName} from './app.json';
-import App from './App';
+import App from './main';
 
 // // Use prebuilt version of RNVI in dist folder
 // import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';

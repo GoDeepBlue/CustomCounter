@@ -4,8 +4,10 @@ import {View, Text, TextInput} from 'react-native';
 import {ListItem, Button, Icon} from '@rneui/themed';
 
 import styles from './styles';
-
-const InputAddFolder = ({folders, setFolders, setShowInput, createFolderIn, setCreateFolderIn}) => {
+import { Topfolder, Subfolder } from '../../redux/counterSlice';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import {addTopfolder, addSubfolder} from '../../redux/counterSlice';
+const InputAddFolder = ({folders, setFolders, setShowInput, createFolderIn, setCreateFolderIn, setIsChanged}) => {
   //Functional Component is used for creating a folder
   // INPUTS:
   //  folders = folder object in current counter session
@@ -14,39 +16,33 @@ const InputAddFolder = ({folders, setFolders, setShowInput, createFolderIn, setC
   //  createFolderIn = TOP || Name of Folder to create New Folder within
   //  setCreateFolderIn = setter method of variable where new folder should be created
   // -------------------------------
-  const [newFolderName, setNewFolderName] = useState(null);
+  const [newFolderName, setNewFolderName] = useState('');
 
-  //console.log(' ~~ InputAddFolder ~~ folders:', folders);
+  const dispatch = useAppDispatch();
 
   const AddFolder = () => {
     console.log('=================================');
     console.log('Folders BEFORE:', folders);
-    const temp = [...folders];
     if (createFolderIn === '' || createFolderIn === 'TOP') {
       //create new top level folder
-      const newTopFolder = {
-        name: newFolderName,
-        countData: [],
-        subfolders: [],
-      };
-      temp.push(newTopFolder);
-      //setFolders(current => [...current, {name: newFolderName}]);
+      console.log('file: InputAddFolder.tsx ~ line 34 ~ AddFolder ~ newTopFolder', newFolderName);
+      dispatch(addTopfolder(newFolderName));
+      setIsChanged(true);
     } else {
       //create new sub level folder
       // console.log('NEW SUB FOLDER in', createFolderIn);
       // console.log('NEW FOLDER:', newFolderName);
+      const temp = [...folders];
       let index = temp.findIndex(folder => folder.name === createFolderIn);
       console.log('file: InputAddFolder.js ~ line 35 ~ AddFolder ~ index', index);
-
-      const newSubFolder = {
+      const subAdd = {
+        index: index,
         name: newFolderName,
-        countData: [],
       };
-      temp[index].subfolders.push(newSubFolder);
+      dispatch(addSubfolder(subAdd));
+      setIsChanged(true);
     }
-    console.log('folders AFTER:', temp);
     console.log('=================================');
-    setFolders(temp);
     setShowInput(false);
   };
 

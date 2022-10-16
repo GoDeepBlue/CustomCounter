@@ -8,7 +8,10 @@ import { ListItem, Button, Icon } from '@rneui/themed';
 import { EventRegister } from 'react-native-event-listeners';
 
 import * as AsyncStorageFunctions from '../../components/AsyncStorageFunctions';
-
+// Imports for react-redux tools
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import {removeTopfolder, removeSubfolder} from '../../redux/counterSlice';
+// --
 import styles from './styles';
 import SubfolderList from './SubfolderList';
 import InputAddFolder from './InputAddFolder';
@@ -16,103 +19,44 @@ import InputAddFolder from './InputAddFolder';
 const CounterSettingsScreen = ({route}) => {
   //Function is the settings screen for the app settings
   //
-  // Setting Name & Variable Name which holds the setting
-  //  Dark Mode: isDarkTheme
-  //  Save Counts Folder: folders
-    // const saveToFolder = route.params?.saveToFolder;
-    //console.log('file: index.js ~ line 23 ~ CounterSettingsScreen ~ route.params', route.params);
-    
-    const [saveToFolder, setSaveToFolder] = useState('Default');
-    const [isDarkTheme, setIsDarkTheme] = useState(false);
-    const appTheme = useTheme();
-    let colors = appTheme.colors;
+  const appTheme = useTheme();
+  let colors = appTheme.colors;
+  const reduxFolders = useAppSelector((state) => state.counter.folderList);
+  const dispatch = useAppDispatch();
 
-    // const initialState = [{
-    //     name: 'Folder-0',
-    //     countData: [
-    //       {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
-    //       {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
-    //       {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
-    //       {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
-    //       {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171},
-    //     ],
-    //     subfolders: [
-    //       {
-    //         name: 'subfolder-0a',
-    //         countData: [
-    //           {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
-    //           {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
-    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
-    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
-    //           {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171}
-    //         ],
-    //       },
-    //       {
-    //         name: 'subfolder-0b',
-    //         countData: [
-    //           {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
-    //           {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
-    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
-    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
-    //           {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171},
-    //         ],
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     name: 'Folder-1',
-    //   },
-    //   {
-    //     name: 'Folder-2',
-    //     subfolders: [
-    //       {
-    //         name: 'subfolder-2a',
-    //       },
-    //       {
-    //         name: 'subfolder-2b',
-    //       },
-    //       {
-    //         name: 'subfolder-2c',
-    //       },
-    //     ],
-    //   },
-    // ];
-
-    const emptyFolder = [
-      {
-        name: 'Default',
-        countData: [],
-        subfolders: [],
-      },
-    ];
-
-    const [folders, setFolders] = useState(emptyFolder);
-    //Used for storing the folder structure and folders count data
-    const [createFolderIn, setCreateFolderIn] = useState('');
-    //Used to store name of folder to create new folder within or TOP for Top level
-    const [topExpanded, setTopExpanded] = useState(false);
-    //Used as a flag for expanding or contracting TopLevel folder
-    const [showInput, setShowInput] = useState(false);
-    //Used as flag for InputAddFolder name Functional Component
-    const [topFolderSelected, setTopFolderSelected] = useState('Default');
-    //Used to set the Top Level folder to display in "Save Counts To:"
-    const [subFolderSelected, setSubFolderSelected] = useState('');
-    //Used to set the Sub Level folder to display in "Save Counts To:"
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [saveToFolder, setSaveToFolder] = useState('');
+  const [isChanged, setIsChanged] = useState(false);
+  const [folders, setFolders] = useState([]);
+  //Used for storing the folder structure and folders count data
+  const [createFolderIn, setCreateFolderIn] = useState('');
+  //Used to store name of folder to create new folder within or TOP for Top level
+  const [topExpanded, setTopExpanded] = useState(false);
+  //Used as a flag for expanding or contracting TopLevel folder
+  const [showInput, setShowInput] = useState(false);
+  //Used as flag for InputAddFolder name Functional Component
 
     useEffect(() => { 
       console.log(' ~ CounterSettings ~ useEffect called ~ ');
-      whatIsAppTheme();
-      getStoredSaveToFolder();
-      getStoredCountData();
+      getAppTheme();
+      getSaveToFolder();
+      setFolders(reduxFolders);
     }, []);
 
     useEffect(() => { 
+      console.log('file: index.js ~ line 46 ~ CounterSettingsScreen ~ isChanged', isChanged);
+      getSaveToFolder();
+      setFolders(reduxFolders);
+    }, [isChanged]);
+
+
+    useEffect(() => { 
       console.log(' ~ CounterSettings ~ useEffect called ~ folders changed ~ ');
-      saveStoredCountData();
+      //saveStoredCountData();
       console.log(' ~~ updated folders:', folders);
     }, [folders]);
 
-    function whatIsAppTheme() {
+    function getAppTheme() {
         // console.log('whatIsAppTheme: ' + appTheme.dark);
         // console.log(appTheme);
         if (appTheme.dark === true) {
@@ -122,46 +66,44 @@ const CounterSettingsScreen = ({route}) => {
         }
     }
 
-    const toggleTheme = () => {
+    const toggleTheme = async () => {
         setIsDarkTheme(!isDarkTheme);
         EventRegister.emit('changeThemeEvent', !isDarkTheme);
-        AsyncStorageFunctions.storeSettings(!isDarkTheme);
+        const resp = await AsyncStorageFunctions.storeSettings(!isDarkTheme);
     };
 
-    const saveStoredCountData = async () => {
-      const resp = await AsyncStorageFunctions.saveCountData(folders);
-    };
+    // const saveStoredCountData = async () => {
+    //   const resp = await AsyncStorageFunctions.saveCountData(folders);
+    // };
 
-    const getStoredCountData = async () => {
-      const data = await AsyncStorageFunctions.getCountData();
-      console.log(' ~~ SaveCount ~ line 33 ~ data:', data);
-      setFolders(data);
-    };
-
-    const getStoredSaveToFolder = async () => {
-      const saveFolder = await AsyncStorageFunctions.getSaveToFolder();
-      if (saveFolder !== null) {
-        Alert.alert('Check if folder exists in data');
-        setSaveToFolder(saveFolder);
-        setTopFolderSelected(saveFolder?.name);
-        setSubFolderSelected(saveFolder?.subfolder);
-        console.log('file: App.js ~ line 37 ~ getData ~ saveFolder', saveFolder);
-      } else {
-        setSaveToFolder({
-          name: 'Default',
-          subfolder: '',
+    const getSaveToFolder = () => {
+      folders.forEach(top => {
+          if (top.isSelected) {
+            console.log('found saveTo:', {name: top.name, subfolder: ''});
+            setSaveToFolder({name: top.name, subfolder: ''});
+          } else {
+            top.subfolders.forEach( sub => {
+              if (sub.isSelected) {
+                console.log('found saveTo:', {name: top.name, subfolder: sub.name});
+                setSaveToFolder({name: top.name, subfolder: sub.name});
+              }
+            });
+          }
         });
-        setFolders(emptyFolder);
-      }
     };
+
+    // const getStoredSaveToFolder = () => {
+    //   console.log('redux value:', reduxFolders);
+    //   const tempSaveTo = dispatch(getSaveToFolder());
+    //   setSaveToFolder(tempSaveTo);
+    //   setFolders(reduxFolders);
+    // };
 
     const changeSaveToFolder = (newFolder) => {
       setSaveToFolder(newFolder);
-      setTopFolderSelected(newFolder?.name);
-      setSubFolderSelected(newFolder?.subfolder);
       console.log('file: App.js ~ line 37 ~ getData ~ saveFolder', newFolder);
       EventRegister.emit('changeFolderEvent', newFolder);
-      AsyncStorageFunctions.setSaveToFolder(newFolder);
+      //const resp = await AsyncStorageFunctions.setSaveToFolder(newFolder);
     };
 
     const renderAccordionIcon = () => (
@@ -210,15 +152,11 @@ const CounterSettingsScreen = ({route}) => {
             {
               text: "Yes",
               onPress: () => {
-                var newSubFolders = aFolderTree.subfolders.filter(folder => folder.name !== folder2Delete);
-                //https://stackoverflow.com/questions/3954438/how-to-remove-item-from-array-by-value
-                //console.log('newSubFolders:', newSubFolders );
-                let newFolders = folders.map( parentFolders => (
-                  parentFolders === aFolderTree ? {...parentFolders, subfolders: newSubFolders} : parentFolders
-                ));
-                //https://www.codegrepper.com/code-examples/javascript/react+native+update+state+object
-                //console.log('new folder list:', newFolders);
-                setFolders(newFolders);
+                const topIndex = folders.findIndex(folder => folder.name === aFolderTree.name);
+                const subIndex = aFolderTree.subfolders.findIndex(subfolder => subfolder.name === folder2Delete);
+                const parmObject = {topIndex: topIndex, subIndex: subIndex};
+                dispatch(removeSubfolder(parmObject));
+                setIsChanged(!isChanged);
               },
             },
             { text: "No", onPress: () => console.log("No Pressed") }
@@ -247,11 +185,13 @@ const CounterSettingsScreen = ({route}) => {
             {
               text: "Yes",
               onPress: () => {
-                var newFolders = folders.filter(folder => folder.name !== folder2Delete);
+                //var newFolders = folders.filter(folder => folder.name !== folder2Delete);
+                const i = folders.findIndex(folder => folder.name === folder2Delete);
+                dispatch(removeTopfolder(i));
+                setIsChanged(!isChanged);
                 //https://stackoverflow.com/questions/3954438/how-to-remove-item-from-array-by-value
-  
-                console.log('new folder list:', newFolders);
-                setFolders(newFolders);
+                // console.log('new folder list:', newFolders);
+                // setFolders(newFolders);
               },
             },
             { text: "No", onPress: () => console.log("No Pressed") }
@@ -283,11 +223,11 @@ const CounterSettingsScreen = ({route}) => {
                       Save Counts To:
                     </Text>
                     <Text style={[styles.folderTextSettingValue, { color: colors.text }]}>
-                      {topFolderSelected}
+                      {saveToFolder?.name}
                     </Text>
-                    {subFolderSelected !== '' && (
+                    {saveToFolder.subfolder !== '' && (
                       <Text style={[styles.folderTextSettingValue, { color: colors.text }]}>
-                      { ' | ' + subFolderSelected}
+                      { ' | ' + saveToFolder.subfolder}
                       </Text>
                     )}
                   </View>
@@ -305,6 +245,7 @@ const CounterSettingsScreen = ({route}) => {
                   setShowInput={setShowInput}
                   createFolderIn={createFolderIn}
                   setCreateFolderIn={setCreateFolderIn}
+                  setIsChanged={() => setIsChanged(!isChanged)}
                 />
               )}
                 {folders !== null && folders.map((aFolder, i) => (

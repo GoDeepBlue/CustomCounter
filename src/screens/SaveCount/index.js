@@ -1,23 +1,23 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {View, Text} from 'react-native';
 
-//import * as CounterData from '../../components/CountsData';
-import {DataContext} from '../../context/CountersDataContext';
-
 import {useTheme} from '@react-navigation/native';
+
+// Redux imports
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import {addCount} from '../../redux/counterSlice';
+
 import styles from './styles';
 
 const SaveCountScreen = ({route, navigation}) => {
 
   const {count, saveToFolder} = route.params;
   console.log(' ~~ SaveCount ~ count:', count);
-  console.log(' ~~ SaveCount ~ saveToFolder:', saveToFolder);
-  const context = useContext(DataContext);
   const [listData, setListData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const {colors} = useTheme();
-
+  const dispatch = useAppDispatch();
   const dateInfo = getFormattedDate();
   const key = getKey();
 
@@ -29,28 +29,23 @@ const SaveCountScreen = ({route, navigation}) => {
     storeData();
   }, [count, saveToFolder]);
 
-  const getData = async () => {
-    // const data = await CounterData.getCounterData();
-    // setListData(data);
-    // setLoading(false);
-  };
-
   const storeData = () => {
     //save2Folder = {"name": "Folder-0", "subfolder": ""}
-    let newListElement = {key: key, count: count, countDate: dateInfo};
-    let newListItem = [newListElement];
-    console.log('file: index.js ~ line 42 ~ storeData ~ newListItem', newListItem);
-    context.addCount(newListItem, saveToFolder);
+    //let newListElement = {key: key, count: count, countDate: dateInfo};
+    const newCount = {
+      key: key,
+      count: count,
+      date: dateInfo,
+    };
+    dispatch(addCount(newCount));
   };
 
   function getKey() {
     const d = new Date();
-
     let time = d.getTime();
     let date = d.getFullYear() + d.getMonth() + d.getDay();
-    let formatedKey = date + time;
-
-    return formatedKey;
+    let formattedKey = date + time;
+    return formattedKey.toString();
   }
 
   function getFormattedDate() {
