@@ -110,7 +110,7 @@ export const counterSlice = createSlice({
       // INPUT
       // <{name = top folder name, subfolder = subfolder name}>
       // ----------------------
-      console.log('file: counterSlice.ts ~ line 119 ~ setSaveTo name:', action.payload.name);
+      //console.log('file: counterSlice.ts ~ line 119 ~ setSaveTo name:', action.payload.name);
       // clear all isSelected
       for (let i = 0; i < state.folderList.length; i++) {
         //for all top folders
@@ -127,13 +127,13 @@ export const counterSlice = createSlice({
           if (action.payload.subfolder === '') { 
             // there is no sub folder
             folder.isSelected = true;
-            console.log('file: counterSlice.ts ~ line 140 ~ TOP folder.isSelected', folder.name);
+            //console.log('file: counterSlice.ts ~ line 140 ~ TOP folder.isSelected', folder.name);
           } else {
             //there is a subfolder
             folder.subfolders.forEach(sub => {
               if (sub.name === action.payload.subfolder) {
                 sub.isSelected = true;
-                console.log('file: counterSlice.ts ~ line 140 ~ SUB folder.isSelected', sub.name);
+                //console.log('file: counterSlice.ts ~ line 140 ~ SUB folder.isSelected', sub.name);
               }
             })
           }

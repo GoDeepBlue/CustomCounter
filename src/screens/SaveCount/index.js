@@ -12,7 +12,6 @@ import styles from './styles';
 const SaveCountScreen = ({route, navigation}) => {
 
   const {count, saveToFolder} = route.params;
-  console.log(' ~~ SaveCount ~ count:', count);
   const [listData, setListData] = useState([]);
   const [loading, setLoading] = useState(true);
 

@@ -39,20 +39,10 @@ const GetCountsScreen = ({route, navigation}) => {
     for (let i = 0; i < reduxData.folderList.length; i++) {
       if (reduxData.folderList[i].isSelected) {
         setListData(reduxData.folderList[i].countData);
-        console.log(' ~~~ saveTo folderName:', reduxData.folderList[i].name);
-        console.log(
-          'file: index.js ~ line 42 ~ getData ~ countData:',
-          reduxData.folderList[i].countData,
-        );
       } else {
         for (let j = 0; j < reduxData.folderList[i].subfolders.length; j++) {
           if (reduxData.folderList[i].subfolders[j].isSelected) {
             setListData(reduxData.folderList[i].subfolders[j].countData);
-            console.log(' ~~~ saveTo folderName:', reduxData.folderList[i].subfolders[j].name);
-            console.log(
-              'file: index.js ~ line 47 ~ getData ~ countData:',
-              reduxData.folderList[i].subfolders[j].countData,
-            );
           }
         }
       }

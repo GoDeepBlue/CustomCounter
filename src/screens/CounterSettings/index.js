@@ -1,18 +1,16 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 
-import { View, Pressable, Text, Switch, Linking, TextInput, ScrollView, Alert, SliderComponent } from 'react-native';
+import { View, Pressable, Text, Switch, Linking, ScrollView, Alert } from 'react-native';
 
 import { useTheme } from '@react-navigation/native';
-import { ListItem, Button, Icon } from '@rneui/themed';
+import { ListItem, Icon } from '@rneui/themed';
 import { EventRegister } from 'react-native-event-listeners';
 
 import * as AsyncStorageFunctions from '../../components/AsyncStorageFunctions';
 // Imports for react-redux tools
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {removeTopfolder, removeSubfolder, setSaveTo} from '../../redux/counterSlice';
-import { saveState } from '../../components/AsyncStorageFunctions';
-import { store } from '../../redux/store';
 // --
 import styles from './styles';
 import SubfolderList from './SubfolderList';
@@ -33,21 +31,17 @@ const CounterSettingsScreen = ({route}) => {
   const [folders, setFolders] = useState([]);
   //Used for storing the folder structure and folders count data
   const [createFolderIn, setCreateFolderIn] = useState('');
-  //Used to store name of folder to create new folder within or TOP for Top level
-  const [topExpanded, setTopExpanded] = useState(false);
   //Used as a flag for expanding or contracting TopLevel folder
   const [showInput, setShowInput] = useState(false);
   //Used as flag for InputAddFolder name Functional Component
 
     useEffect(() => { 
-      console.log(' ~ CounterSettings ~ useEffect called ~ ');
       getAppTheme();
       getSaveToFolder();
       setFolders(reduxFolders);
     }, []);
 
     useEffect(() => { 
-      console.log('file: index.js ~ line 46 ~ CounterSettingsScreen ~ isChanged', isChanged);
       getSaveToFolder();
       setFolders(reduxFolders);
     }, [isChanged]);
@@ -65,22 +59,22 @@ const CounterSettingsScreen = ({route}) => {
     const toggleTheme = async () => {
         setIsDarkTheme(!isDarkTheme);
         EventRegister.emit('changeThemeEvent', !isDarkTheme);
-        const resp = await AsyncStorageFunctions.storeSettings(!isDarkTheme);
+        await AsyncStorageFunctions.storeSettings(!isDarkTheme);
     };
 
     const getSaveToFolder = () => {
       reduxFolders.forEach(top => {
           if (top.isSelected) {
-            console.log('~~ line 71 ~ getSaveToFolder ~ found saveTo:', {name: top.name, subfolder: ''});
+            //console.log('~~ line 71 ~ getSaveToFolder ~ found saveTo:', {name: top.name, subfolder: ''});
             setSaveToFolder({name: top.name, subfolder: ''});
           } else {
-            console.log(' ~~ no top saveTo folder');
+            //console.log(' ~~ no top saveTo folder');
             top.subfolders.forEach( sub => {
               if (sub.isSelected) {
-                console.log('~~ line 76 ~ getSaveToFolder ~ found saveTo:', {name: top.name, subfolder: sub.name});
+                //console.log('~~ line 76 ~ getSaveToFolder ~ found saveTo:', {name: top.name, subfolder: sub.name});
                 setSaveToFolder({name: top.name, subfolder: sub.name});
               } else {
-                console.log(' ~~ no top or sub folder ~~~ PROBLEM');
+                //console.log(' ~~ no top or sub folder ~~~ PROBLEM');
               }
             });
           }
@@ -89,10 +83,9 @@ const CounterSettingsScreen = ({route}) => {
     };
 
     const changeSaveToFolder = (newFolder) => {
-      console.log(' ~ line 85 ~ changeSaveToFolder ~ newFolder', newFolder);
+      //console.log(' ~ line 85 ~ changeSaveToFolder ~ newFolder', newFolder);
       setSaveToFolder(newFolder);
       dispatch(setSaveTo(newFolder));
-      // EventRegister.emit('changeFolderEvent', newFolder);
     };
 
     const renderAccordionIcon = () => (
@@ -112,14 +105,14 @@ const CounterSettingsScreen = ({route}) => {
           {
             text: "Yes",
             onPress: () => {
-              console.log("Yes Pressed");
+              //console.log("Yes Pressed");
               changeSaveToFolder(newSaveToFolder);
             },
           },
           { text: "No", onPress: () => console.log("No Pressed") }
         ]
       );
-      console.log('CounterSettings ~ onSaveToFolder ~ saveToFolder', newSaveToFolder);
+      //console.log('CounterSettings ~ onSaveToFolder ~ saveToFolder', newSaveToFolder);
     };
 
     const onDeleteSubFolder = (aFolderTree, folder2Delete) => {
@@ -163,6 +156,10 @@ const CounterSettingsScreen = ({route}) => {
       // console.log('Folder to delete:', folder2Delete );
       const index = folders.findIndex(folder => folder.name === folder2Delete);
       const subDirs = folders[index].subfolders?.length;
+      if (folders.length === 1) {
+        Alert.alert('Error', 'At least one folder must remain. You can delete all folders.');
+        return false;
+      }
 
       if (subDirs > 0 ) {
         Alert.alert('Error', 'The folders within ' + folder2Delete + ' must be removed before it can be deleted.');

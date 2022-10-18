@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {REDUXKEY, STORAGEKEY, SETTINGSKEY} from '../constants/AsyncStorageKeys';
+import {STORAGEKEY, SETTINGSKEY} from '../constants/AsyncStorageKeys';
 
 export const setSaveToFolder = async folder => {
   //Function used to set which folder the user would like to save their counts too
@@ -44,25 +44,12 @@ export const getThemeSetting = async () => {
   return data;
 };
 
-export const loadState = () => {
-  try {
-    const resp = AsyncStorage.getItem('reduxstate');
-    if (resp !== null) {
-      return resp;
-    } else {
-      return undefined;
-    }
-  } catch (e) {
-    return undefined;
-  }
-};
-
 export const saveState = async state => {
   try {
     const serializedState = JSON.stringify(state);
-    console.log(' ~~~~ saveState ~~~~ ');
-    console.log(serializedState);
-    await AsyncStorage.setItem('reduxstate', serializedState);
+    // console.log(' ~~~~ saveState ~~~~ ');
+    // console.log(serializedState);
+    await AsyncStorage.setItem(STORAGEKEY, serializedState);
   } catch (e) {
     // Ignore
   }

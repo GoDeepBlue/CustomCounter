@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   ActivityIndicator,
+  Text,
   View,
 } from 'react-native';
 
@@ -21,7 +22,25 @@ const App = () => {
         flex: 1,
         justifyContent: 'center',
       }}>
-      <ActivityIndicator size="large" color="#0000ff" />
+        <Text style={{
+          marginTop: 50,
+          fontSize: 30,
+          alignSelf: 'center',
+          fontWeight: 'bold',
+          color: 'grey',
+        }}>
+          Custom Counter
+        </Text>
+        <Text style={{
+          marginTop: 20,
+          fontSize: 15,
+          alignSelf: 'center',
+          fontWeight: 'bold',
+          color: 'grey',
+        }}>
+          Loading data...
+        </Text>
+      <ActivityIndicator style={{paddingTop:20}} size="large" color="##1565c0" />
     </View>
   );
 

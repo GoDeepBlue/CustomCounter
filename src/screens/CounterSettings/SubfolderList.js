@@ -88,7 +88,7 @@ const SubfolderList = ({aFolderTree, i, onDeleteSubFolder, onDeleteTopFolder, on
         bottomDivider
         containerStyle={{backgroundColor: colors.background}}
         onPress={() => {
-          console.log(' --- Calling ShowInput with:', aFolderTree.name);
+          //console.log(' --- Calling ShowInput with:', aFolderTree.name);
           setCreateFolderIn(aFolderTree.name);
           setShowInput(true);
         }}>
