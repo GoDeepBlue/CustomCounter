@@ -1,10 +1,9 @@
 //The slice file represents the slice of logic and state for your redux app
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // Main API function used to define redux logic
 import type { PayloadAction } from '@reduxjs/toolkit';
 // The function logic of one given action object
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { loadState, saveState } from '../components/AsyncStorageFunctions';
+import {saveState } from '../components/AsyncStorageFunctions';
 
 export type CountData = {
   //{key: key, count: count, countDate: dateInfo};
@@ -29,25 +28,6 @@ export type Topfolder = {
 export interface CounterState {
   //Represents the state of our counter which is managed by the reducer
   folderList: Topfolder[];
-};
-
-const loadInitialState = () => {
-  const emptyState = [
-    {
-      name: 'Default',
-      isSelected: true,
-      countData: [],
-      subfolders: [],
-    },
-  ];
-  try {
-    AsyncStorage.getItem('reduxstate') !== null 
-    ? JSON.parse(AsyncStorage.getItem('reduxstate'))
-    : emptyState;
-  } catch (error) {
-    
-  }
-
 };
 
 const initialState: CounterState = {
@@ -114,8 +94,6 @@ export const counterSlice = createSlice({
       saveState(state);
     },    
     addSubfolder: (state, action: PayloadAction<{index: number, name: string}>) => {
-      // console.log(' ~~ addSubfolder name: ', action.payload.name);
-      // console.log(' ~~ addSubfolder index: ', action.payload.index);
       state.folderList[action.payload.index].subfolders.push({
         name: action.payload.name,
         countData: [],
@@ -124,11 +102,7 @@ export const counterSlice = createSlice({
       saveState(state);
     },
     removeSubfolder: (state, action: PayloadAction<{topIndex: number, subIndex: number}>) => {
-      // console.log('file: counterSlice.ts ~ line 109 ~ topIndex', action.payload.topIndex);
-      // console.log('file: counterSlice.ts ~ line 109 ~ subIndex', action.payload.subIndex);
-      // console.log('file: counterSlice.ts ~ line 111 ~ BEFORE subfolders', state.folderList[action.payload.topIndex].subfolders);
       state.folderList[action.payload.topIndex].subfolders.splice(action.payload.subIndex, 1);
-      // console.log('file: counterSlice.ts ~ line 112 ~ AFTER subfolders', state.folderList[action.payload.topIndex].subfolders);
       saveState(state);
     },
     setSaveTo: (state, action: PayloadAction<{name: string, subfolder: string}>) => {
@@ -167,102 +141,10 @@ export const counterSlice = createSlice({
       })
       saveState(state);
     },
-  }
+  },
 });
 
 export const {addCount, removeCount, addTopfolder, removeTopfolder, addSubfolder, removeSubfolder, setSaveTo} = counterSlice.actions;
 // Action creators are generated for each case reducer function
 
 export default counterSlice.reducer;
-
-
-// countData: [
-//   {"count": 0, "date": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": "1663276990053"},
-//   {"count": 5, "date": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": "1663355246281"},
-//   {"count": 0, "date": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": "1663374837974"},
-//   {"count": 0, "date": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": "1663374853235"},
-//   {"count": 0, "date": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": "1663792128171"},
-// ],
-// subfolders: [],
-// },
-// {
-//   name: 'Folder-1',
-//   isSelected: false,
-//   countData: [
-//     {"count": 0, "date": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": "1663276990053"},
-//     {"count": 5, "date": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": "1663355246281"},
-//     {"count": 0, "date": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": "1663374837974"},
-//     {"count": 0, "date": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": "1663374853235"},
-//     {"count": 0, "date": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": "1663792128171"},
-//   ],
-//   subfolders: [],
-// },
-
-// const COUNTERS_KEY = '@CountersDataKey';
-// const initialCountData = {
-//   count: 0,
-//   countData: '',
-//   key: 0,
-// };
-// const initialSubfolders = {
-//   name: '',
-//   countData: initialCountData,
-// };
-// const initialCountersState = [
-//   {
-//     name: 'Default',
-//     countData: [initialCountData],
-//     subfolders: [initialSubfolders],
-//   },
-// ];
-
-// const initialState = [{
-    //     name: 'Folder-0',
-    //     countData: [
-    //       {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
-    //       {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
-    //       {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
-    //       {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
-    //       {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171},
-    //     ],
-    //     subfolders: [
-    //       {
-    //         name: 'subfolder-0a',
-    //         countData: [
-    //           {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
-    //           {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
-    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
-    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
-    //           {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171}
-    //         ],
-    //       },
-    //       {
-    //         name: 'subfolder-0b',
-    //         countData: [
-    //           {"count": 0, "countDate": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": 1663276990053},
-    //           {"count": 5, "countDate": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": 1663355246281},
-    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": 1663374837974},
-    //           {"count": 0, "countDate": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": 1663374853235},
-    //           {"count": 0, "countDate": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": 1663792128171},
-    //         ],
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     name: 'Folder-1',
-    //   },
-    //   {
-    //     name: 'Folder-2',
-    //     subfolders: [
-    //       {
-    //         name: 'subfolder-2a',
-    //       },
-    //       {
-    //         name: 'subfolder-2b',
-    //       },
-    //       {
-    //         name: 'subfolder-2c',
-    //       },
-    //     ],
-    //   },
-    // ];

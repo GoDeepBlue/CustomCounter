@@ -45,23 +45,15 @@ export const getThemeSetting = async () => {
 };
 
 export const loadState = () => {
-  const emptyState = [
-    {
-      name: 'Default',
-      isSelected: true,
-      countData: [],
-      subfolders: [],
-    },
-  ];
   try {
     const resp = AsyncStorage.getItem('reduxstate');
     if (resp !== null) {
       return resp;
     } else {
-      return emptyState;
+      return undefined;
     }
   } catch (e) {
-    return emptyState;
+    return undefined;
   }
 };
 
