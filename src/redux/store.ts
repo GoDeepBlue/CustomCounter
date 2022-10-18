@@ -1,7 +1,7 @@
 // This is the wrapper for a redux app and it automatically takes 
 //    care of a lot of setup that was required in legacy Redux
-import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './counterSlice'
+import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from './counterSlice';
 
 export const store = configureStore({
   reducer: {

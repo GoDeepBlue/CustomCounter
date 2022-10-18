@@ -22,10 +22,8 @@ import styles from './styles';
 const GetCountsScreen = ({route, navigation}) => {
   const {saveToFolder} = route.params;
 
-  // saveToFolder is the folder user selected to save data to
-  const [fullCountsData, setFullCountsData] = useState([]);
   // fullCountsData is entire dataset of all counts for every folder
-  const countData = useAppSelector(state => state.counter.folderList[0].countData);
+  const reduxData = useAppSelector(state => state.counter);
   const dispatch = useAppDispatch();
   const [listData, setListData] = useState([]);
   //listData is countData for 'current' saveToFolder
@@ -35,14 +33,30 @@ const GetCountsScreen = ({route, navigation}) => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [listData]);
 
   const getData = async () => {
-    setListData(countData);
-    //update list data for Saved Counts display
-
-    setFullCountsData(countData);
-    //store full data retrieved
+    for (let i = 0; i < reduxData.folderList.length; i++) {
+      if (reduxData.folderList[i].isSelected) {
+        setListData(reduxData.folderList[i].countData);
+        console.log(' ~~~ saveTo folderName:', reduxData.folderList[i].name);
+        console.log(
+          'file: index.js ~ line 42 ~ getData ~ countData:',
+          reduxData.folderList[i].countData,
+        );
+      } else {
+        for (let j = 0; j < reduxData.folderList[i].subfolders.length; j++) {
+          if (reduxData.folderList[i].subfolders[j].isSelected) {
+            setListData(reduxData.folderList[i].subfolders[j].countData);
+            console.log(' ~~~ saveTo folderName:', reduxData.folderList[i].subfolders[j].name);
+            console.log(
+              'file: index.js ~ line 47 ~ getData ~ countData:',
+              reduxData.folderList[i].subfolders[j].countData,
+            );
+          }
+        }
+      }
+    }
     setLoading(false);
   };
 
@@ -254,48 +268,59 @@ const GetCountsScreen = ({route, navigation}) => {
 
   return (
     <View>
-      <SwipeListView
-        data={listData}
-        renderItem={renderItem}
-        renderHiddenItem={renderHiddenItem}
-        leftOpenValue={75}
-        rightOpenValue={-150}
-        disableRightSwipe
-        onRowDidOpen={onRowDidOpen}
-        leftActivationValue={100}
-        rightActivationValue={-200}
-        leftActionValue={0}
-        rightActionValue={-500}
-        onLeftAction={onLeftAction}
-        onRightAction={onRightAction}
-        onLeftActionStatusChange={onLeftActionStatusChange}
-        onRightActionStatusChange={onRightActionStatusChange}
-      />
-      {(() => {
-        if (
-          listData === null ||
-          listData === undefined ||
-          listData.length === 0
-        ) {
-          return (
-            <Text
-              style={{textAlign: 'center', marginTop: 40, color: colors.text}}>
-              {' '}
-              There are no saved Counts.{' '}
-            </Text>
-          );
-        } else {
-          return (
-            <Button
-              title="Clear All Counts"
-              onPress={() => showConfirmDelete()}>
-              Clear All Counts
-            </Button>
-          );
-        }
-      })()}
+      {loading ? (
+        <View>
+          <Text> Loading .... </Text>
+        </View>
+      ) : (
+        <View>
+          <SwipeListView
+            data={listData}
+            renderItem={renderItem}
+            renderHiddenItem={renderHiddenItem}
+            leftOpenValue={75}
+            rightOpenValue={-150}
+            disableRightSwipe
+            onRowDidOpen={onRowDidOpen}
+            leftActivationValue={100}
+            rightActivationValue={-200}
+            leftActionValue={0}
+            rightActionValue={-500}
+            onLeftAction={onLeftAction}
+            onRightAction={onRightAction}
+            onLeftActionStatusChange={onLeftActionStatusChange}
+            onRightActionStatusChange={onRightActionStatusChange}
+          />
+          {(() => {
+            if (
+              listData === null ||
+              listData === undefined ||
+              listData.length === 0
+            ) {
+              return (
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    marginTop: 40,
+                    color: colors.text,
+                  }}>
+                  {' '}
+                  There are no saved Counts.{' '}
+                </Text>
+              );
+            } else {
+              return (
+                <Button
+                  title="Clear All Counts"
+                  onPress={() => showConfirmDelete()}>
+                  Clear All Counts
+                </Button>
+              );
+            }
+          })()}
+        </View>
+      )}
     </View>
   );
 };
-
 export default GetCountsScreen;

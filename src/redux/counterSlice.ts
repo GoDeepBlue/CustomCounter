@@ -1,14 +1,10 @@
-// -- How To Info for Redux Slice
-//  https://www.youtube.com/watch?v=9zySeP5vH9c
-//  https://redux-toolkit.js.org/usage/usage-guide
-//  https://stackoverflow.com/questions/70468618/react-native-redux-how-do-i-update-a-specific-value-in-a-slice
-// --
-
 //The slice file represents the slice of logic and state for your redux app
 import { createSlice } from '@reduxjs/toolkit';
 // Main API function used to define redux logic
 import type { PayloadAction } from '@reduxjs/toolkit';
 // The function logic of one given action object
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { loadState, saveState } from '../components/AsyncStorageFunctions';
 
 export type CountData = {
   //{key: key, count: count, countDate: dateInfo};
@@ -35,32 +31,33 @@ export interface CounterState {
   folderList: Topfolder[];
 };
 
+const loadInitialState = () => {
+  const emptyState = [
+    {
+      name: 'Default',
+      isSelected: true,
+      countData: [],
+      subfolders: [],
+    },
+  ];
+  try {
+    AsyncStorage.getItem('reduxstate') !== null 
+    ? JSON.parse(AsyncStorage.getItem('reduxstate'))
+    : emptyState;
+  } catch (error) {
+    
+  }
+
+};
+
 const initialState: CounterState = {
   // Represents the initial state for the CounterState defined in the interface
   folderList: [
     {
-      name: 'MyHomey',
+      name: 'Default',
       isSelected: true,
-      countData: [
-        {"count": 0, "date": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": "1663276990053"},
-        {"count": 5, "date": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": "1663355246281"},
-        {"count": 0, "date": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": "1663374837974"},
-        {"count": 0, "date": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": "1663374853235"},
-        {"count": 0, "date": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": "1663792128171"},
-      ],
+      countData: [],
       subfolders: [],
-    },
-    {
-        name: 'Folder-1',
-        isSelected: false,
-        countData: [
-          {"count": 0, "date": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": "1663276990053"},
-          {"count": 5, "date": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": "1663355246281"},
-          {"count": 0, "date": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": "1663374837974"},
-          {"count": 0, "date": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": "1663374853235"},
-          {"count": 0, "date": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": "1663792128171"},
-        ],
-        subfolders: [],
     },
 ]};
 
@@ -71,15 +68,35 @@ export const counterSlice = createSlice({
               // Written as an inline object function
     addCount: (state, action: PayloadAction<CountData>) => {
       //console.log('addCount', action.payload);
-      state.folderList[0].countData.push(action.payload);
+      //state.folderList[0].countData.push(action.payload);
       //console.log('updated state:',state);
+      for (let i = 0; i < state.folderList.length; i++) {
+        if (state.folderList[i].isSelected) {
+          state.folderList[i].countData.push(action.payload);
+        } else {
+          for (let j = 0; j < state.folderList[i].subfolders.length; j++) {
+            if (state.folderList[i].subfolders[j].isSelected) {
+              state.folderList[i].subfolders[j].countData.push(action.payload);
+            }
+          }
+        }
+      }
+      saveState(state);
     },
     removeCount: (state, action: PayloadAction<Array<CountData>>) => {
       //console.log('removeCount key:', action.payload);
-      return {
-        ...state,
-        countData: action.payload,
-      };
+      for (let i = 0; i < state.folderList.length; i++) {
+        if (state.folderList[i].isSelected) {
+            state.folderList[i].countData = [...action.payload];
+        } else {
+          for (let j = 0; j < state.folderList[i].subfolders.length; j++) {
+            if (state.folderList[i].subfolders[j].isSelected) {
+              state.folderList[i].subfolders[j].countData = [...action.payload];
+            }
+          }
+        }
+      }
+      saveState(state);
     },
     addTopfolder: (state, action: PayloadAction<string>) => {
       state.folderList.push(
@@ -90,10 +107,11 @@ export const counterSlice = createSlice({
           subfolders: [],
         }
       );
-      //console.log('added topfolder state:',state);
+      saveState(state);
     },
     removeTopfolder: (state, action: PayloadAction<number>) => {
       state.folderList.splice(action.payload, 1);
+      saveState(state);
     },    
     addSubfolder: (state, action: PayloadAction<{index: number, name: string}>) => {
       // console.log(' ~~ addSubfolder name: ', action.payload.name);
@@ -103,6 +121,7 @@ export const counterSlice = createSlice({
         countData: [],
         isSelected: false,
       });
+      saveState(state);
     },
     removeSubfolder: (state, action: PayloadAction<{topIndex: number, subIndex: number}>) => {
       // console.log('file: counterSlice.ts ~ line 109 ~ topIndex', action.payload.topIndex);
@@ -110,18 +129,74 @@ export const counterSlice = createSlice({
       // console.log('file: counterSlice.ts ~ line 111 ~ BEFORE subfolders', state.folderList[action.payload.topIndex].subfolders);
       state.folderList[action.payload.topIndex].subfolders.splice(action.payload.subIndex, 1);
       // console.log('file: counterSlice.ts ~ line 112 ~ AFTER subfolders', state.folderList[action.payload.topIndex].subfolders);
+      saveState(state);
     },
-    setSaveTo: (state, action: PayloadAction<{topIndex: number, subIndex: number}>) => {
-      // console.log('file: counterSlice.ts ~ line 109 ~ topIndex', action.payload.topIndex);
-      // console.log('file: counterSlice.ts ~ line 109 ~ subIndex', action.payload.subIndex);
+    setSaveTo: (state, action: PayloadAction<{name: string, subfolder: string}>) => {
+      //FUNCTION sets the isSelected attribute for the 'save to' location
+      // INPUT
+      // <{name = top folder name, subfolder = subfolder name}>
+      // ----------------------
+      console.log('file: counterSlice.ts ~ line 119 ~ setSaveTo name:', action.payload.name);
+      // clear all isSelected
+      for (let i = 0; i < state.folderList.length; i++) {
+        //for all top folders
+        state.folderList[i].isSelected = false;
+        for (let j = 0; j < state.folderList[i].subfolders.length; j++) {
+          // for all subfolders
+          state.folderList[i].subfolders[j].isSelected = false;
+        }
+      }
+      // -- loop through again to set isSelected for new folder
+      state.folderList.forEach(folder => {
+      // for each top folder
+        if (folder.name === action.payload.name) {
+          if (action.payload.subfolder === '') { 
+            // there is no sub folder
+            folder.isSelected = true;
+            console.log('file: counterSlice.ts ~ line 140 ~ TOP folder.isSelected', folder.name);
+          } else {
+            //there is a subfolder
+            folder.subfolders.forEach(sub => {
+              if (sub.name === action.payload.subfolder) {
+                sub.isSelected = true;
+                console.log('file: counterSlice.ts ~ line 140 ~ SUB folder.isSelected', sub.name);
+              }
+            })
+          }
+        }
+      })
+      saveState(state);
     },
-  },
+  }
 });
 
-export const {addCount, removeCount, addTopfolder, removeTopfolder, addSubfolder, removeSubfolder} = counterSlice.actions;
+export const {addCount, removeCount, addTopfolder, removeTopfolder, addSubfolder, removeSubfolder, setSaveTo} = counterSlice.actions;
 // Action creators are generated for each case reducer function
 
 export default counterSlice.reducer;
+
+
+// countData: [
+//   {"count": 0, "date": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": "1663276990053"},
+//   {"count": 5, "date": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": "1663355246281"},
+//   {"count": 0, "date": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": "1663374837974"},
+//   {"count": 0, "date": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": "1663374853235"},
+//   {"count": 0, "date": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": "1663792128171"},
+// ],
+// subfolders: [],
+// },
+// {
+//   name: 'Folder-1',
+//   isSelected: false,
+//   countData: [
+//     {"count": 0, "date": "Thu, Sep 15, 2022 at 02:23:08 PM", "key": "1663276990053"},
+//     {"count": 5, "date": "Fri, Sep 16, 2022 at 12:07:24 PM", "key": "1663355246281"},
+//     {"count": 0, "date": "Fri, Sep 16, 2022 at 05:33:55 PM", "key": "1663374837974"},
+//     {"count": 0, "date": "Fri, Sep 16, 2022 at 05:34:11 PM", "key": "1663374853235"},
+//     {"count": 0, "date": "Wed, Sep 21, 2022 at 01:28:46 PM", "key": "1663792128171"},
+//   ],
+//   subfolders: [],
+// },
 
 // const COUNTERS_KEY = '@CountersDataKey';
 // const initialCountData = {

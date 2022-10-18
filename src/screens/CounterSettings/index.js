@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 
-import { View, Pressable, Text, Switch, Linking, TextInput, ScrollView, Alert } from 'react-native';
+import { View, Pressable, Text, Switch, Linking, TextInput, ScrollView, Alert, SliderComponent } from 'react-native';
 
 import { useTheme } from '@react-navigation/native';
 import { ListItem, Button, Icon } from '@rneui/themed';
@@ -10,7 +10,9 @@ import { EventRegister } from 'react-native-event-listeners';
 import * as AsyncStorageFunctions from '../../components/AsyncStorageFunctions';
 // Imports for react-redux tools
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
-import {removeTopfolder, removeSubfolder} from '../../redux/counterSlice';
+import {removeTopfolder, removeSubfolder, setSaveTo} from '../../redux/counterSlice';
+import { saveState } from '../../components/AsyncStorageFunctions';
+import { store } from '../../redux/store';
 // --
 import styles from './styles';
 import SubfolderList from './SubfolderList';
@@ -25,7 +27,8 @@ const CounterSettingsScreen = ({route}) => {
   const dispatch = useAppDispatch();
 
   const [isDarkTheme, setIsDarkTheme] = useState(false);
-  const [saveToFolder, setSaveToFolder] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [saveToFolder, setSaveToFolder] = useState({});
   const [isChanged, setIsChanged] = useState(false);
   const [folders, setFolders] = useState([]);
   //Used for storing the folder structure and folders count data
@@ -49,13 +52,6 @@ const CounterSettingsScreen = ({route}) => {
       setFolders(reduxFolders);
     }, [isChanged]);
 
-
-    useEffect(() => { 
-      console.log(' ~ CounterSettings ~ useEffect called ~ folders changed ~ ');
-      //saveStoredCountData();
-      console.log(' ~~ updated folders:', folders);
-    }, [folders]);
-
     function getAppTheme() {
         // console.log('whatIsAppTheme: ' + appTheme.dark);
         // console.log(appTheme);
@@ -72,38 +68,31 @@ const CounterSettingsScreen = ({route}) => {
         const resp = await AsyncStorageFunctions.storeSettings(!isDarkTheme);
     };
 
-    // const saveStoredCountData = async () => {
-    //   const resp = await AsyncStorageFunctions.saveCountData(folders);
-    // };
-
     const getSaveToFolder = () => {
-      folders.forEach(top => {
+      reduxFolders.forEach(top => {
           if (top.isSelected) {
-            console.log('found saveTo:', {name: top.name, subfolder: ''});
+            console.log('~~ line 71 ~ getSaveToFolder ~ found saveTo:', {name: top.name, subfolder: ''});
             setSaveToFolder({name: top.name, subfolder: ''});
           } else {
+            console.log(' ~~ no top saveTo folder');
             top.subfolders.forEach( sub => {
               if (sub.isSelected) {
-                console.log('found saveTo:', {name: top.name, subfolder: sub.name});
+                console.log('~~ line 76 ~ getSaveToFolder ~ found saveTo:', {name: top.name, subfolder: sub.name});
                 setSaveToFolder({name: top.name, subfolder: sub.name});
+              } else {
+                console.log(' ~~ no top or sub folder ~~~ PROBLEM');
               }
             });
           }
-        });
+      });
+      setIsLoading(false);
     };
 
-    // const getStoredSaveToFolder = () => {
-    //   console.log('redux value:', reduxFolders);
-    //   const tempSaveTo = dispatch(getSaveToFolder());
-    //   setSaveToFolder(tempSaveTo);
-    //   setFolders(reduxFolders);
-    // };
-
     const changeSaveToFolder = (newFolder) => {
+      console.log(' ~ line 85 ~ changeSaveToFolder ~ newFolder', newFolder);
       setSaveToFolder(newFolder);
-      console.log('file: App.js ~ line 37 ~ getData ~ saveFolder', newFolder);
-      EventRegister.emit('changeFolderEvent', newFolder);
-      //const resp = await AsyncStorageFunctions.setSaveToFolder(newFolder);
+      dispatch(setSaveTo(newFolder));
+      // EventRegister.emit('changeFolderEvent', newFolder);
     };
 
     const renderAccordionIcon = () => (
@@ -202,117 +191,125 @@ const CounterSettingsScreen = ({route}) => {
 
     return (
         <View style={[styles.topContainer, { backgroundColor: colors.background }]}>
-            <View style={styles.darkModeContainer}>
-                <Text style={[styles.textSetting, { color: colors.text }]}>Dark Mode:</Text>
-                <Switch
-                    onValueChange={() => { toggleTheme(); }}
-                    value={isDarkTheme}
-                />
-                <Text style={{ fontStyle: 'italic', color: colors.text }}>
-                    ({isDarkTheme ? 'On' : 'Off'})
-                </Text>
+          {isLoading ? (
+            <View> 
+              <Text> Loading .... </Text>
             </View>
-            {/* TOP Folder List -- Start */}
-            <ScrollView style={styles.saveToContainer}>
-              <ListItem.Accordion
-                containerStyle={{backgroundColor: colors.background}}
-                icon={renderAccordionIcon}
-                content={
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={[styles.folderTextSetting, { color: colors.text }]}>
-                      Save Counts To:
-                    </Text>
-                    <Text style={[styles.folderTextSettingValue, { color: colors.text }]}>
-                      {saveToFolder?.name}
-                    </Text>
-                    {saveToFolder.subfolder !== '' && (
-                      <Text style={[styles.folderTextSettingValue, { color: colors.text }]}>
-                      { ' | ' + saveToFolder.subfolder}
-                      </Text>
-                    )}
-                  </View>
-                }
-                isExpanded={true}
-                noIcon={true}
-                // onPress={() => {
-                //   setTopExpanded(!topExpanded);
-                // }}
-              >
-              {showInput && (
-                <InputAddFolder
-                  folders={folders}
-                  setFolders={setFolders}
-                  setShowInput={setShowInput}
-                  createFolderIn={createFolderIn}
-                  setCreateFolderIn={setCreateFolderIn}
-                  setIsChanged={() => setIsChanged(!isChanged)}
-                />
-              )}
-                {folders !== null && folders.map((aFolder, i) => (
-                  <SubfolderList
-                    aFolderTree={aFolder}
-                    onDeleteSubFolder={onDeleteSubFolder}
-                    onDeleteTopFolder={onDeleteTopFolder}
-                    onSaveToFolder={onSaveToFolder}
-                    setShowInput={setShowInput}
-                    setCreateFolderIn={setCreateFolderIn}
-                    key={i}
-                    i={i}
+          ): (
+            <>
+              <View style={styles.darkModeContainer}>
+                  <Text style={[styles.textSetting, { color: colors.text }]}>Dark Mode:</Text>
+                  <Switch
+                      onValueChange={() => { toggleTheme(); }}
+                      value={isDarkTheme}
                   />
-                ))}
-                <ListItem
+                  <Text style={{ fontStyle: 'italic', color: colors.text }}>
+                      ({isDarkTheme ? 'On' : 'Off'})
+                  </Text>
+              </View>
+              {/* TOP Folder List -- Start */}
+              <ScrollView style={styles.saveToContainer}>
+                <ListItem.Accordion
                   containerStyle={{backgroundColor: colors.background}}
-                  onPress={() => {
-                    setCreateFolderIn('TOP');
-                    setShowInput(true);
-                  }}
-                  bottomDivider>
-                  <Icon name='create-new-folder' color={colors.text} size={25}/>
-                  <ListItem.Content>
-                    <ListItem.Title style={[styles.folderTextSettingValue, { color: colors.text }]}>
-                      Create top level folder
-                    </ListItem.Title>
-                  </ListItem.Content>
-                </ListItem>
-              </ListItem.Accordion>
-            </ScrollView>
-            {/* Top Folder List -- End */}
-            <View style={styles.productInfoContainer}>
-                <Text style={[styles.textBody, { color: colors.text }]}>
-                    Thank you for using the Custom Counter app! This product was developed by Deep Blue Development LLC.
-                </Text>
-                <Text style={[styles.textBody, { color: colors.text }]}>
-                    We welcome your feedback and appreciate you joining the Deep Blue Development community!
-                </Text>
-            </View>
-            <View style={styles.bottomButtonsContainer}>
-                <Pressable
-                    style={({ pressed }) => [
-                        {
-                            backgroundColor: pressed ? '#5472d3' : '#002171',
-                        },
-                        styles.button,
-                    ]}
-                    onPress={() => { Linking.openURL('https://www.enterdeepblue.com/contact.html'); }}
+                  icon={renderAccordionIcon}
+                  content={
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={[styles.folderTextSetting, { color: colors.text }]}>
+                        Save Counts To:
+                      </Text>
+                      <Text style={[styles.folderTextSettingValue, { color: colors.text }]}>
+                        {saveToFolder?.name}
+                      </Text>
+                      {saveToFolder.subfolder !== '' && saveToFolder.subfolder !== undefined && (
+                        <Text style={[styles.folderTextSettingValue, { color: colors.text }]}>
+                        { ' | ' + saveToFolder?.subfolder}
+                        </Text>
+                      )}
+                    </View>
+                  }
+                  isExpanded={true}
+                  noIcon={true}
+                  // onPress={() => {
+                  //   setTopExpanded(!topExpanded);
+                  // }}
                 >
-                    <Text style={styles.textButton}>
-                        Product Feedback
-                    </Text>
-                </Pressable>
-                <Text> </Text>
-                <Pressable
-                    style={({ pressed }) => [
-                        {
-                            backgroundColor: pressed ? '#5472d3' : '#002171',
-                        },
-                        styles.button,
-                    ]}
-                    onPress={() => { Linking.openURL('https://www.enterdeepblue.com/') }}>
-                    <Text style={styles.textButton}>
-                        Company Web Site
-                    </Text>
-                </Pressable>
-            </View>
+                {showInput && (
+                  <InputAddFolder
+                    folders={folders}
+                    setFolders={setFolders}
+                    setShowInput={setShowInput}
+                    createFolderIn={createFolderIn}
+                    setCreateFolderIn={setCreateFolderIn}
+                    setIsChanged={() => setIsChanged(!isChanged)}
+                  />
+                )}
+                  {folders !== null && folders.map((aFolder, i) => (
+                    <SubfolderList
+                      aFolderTree={aFolder}
+                      onDeleteSubFolder={onDeleteSubFolder}
+                      onDeleteTopFolder={onDeleteTopFolder}
+                      onSaveToFolder={onSaveToFolder}
+                      setShowInput={setShowInput}
+                      setCreateFolderIn={setCreateFolderIn}
+                      key={i}
+                      i={i}
+                    />
+                  ))}
+                  <ListItem
+                    containerStyle={{backgroundColor: colors.background}}
+                    onPress={() => {
+                      setCreateFolderIn('TOP');
+                      setShowInput(true);
+                    }}
+                    bottomDivider>
+                    <Icon name='create-new-folder' color={colors.text} size={25}/>
+                    <ListItem.Content>
+                      <ListItem.Title style={[styles.folderTextSettingValue, { color: colors.text }]}>
+                        Create top level folder
+                      </ListItem.Title>
+                    </ListItem.Content>
+                  </ListItem>
+                </ListItem.Accordion>
+              </ScrollView>
+              {/* Top Folder List -- End */}
+              <View style={styles.productInfoContainer}>
+                  <Text style={[styles.textBody, { color: colors.text }]}>
+                      Thank you for using the Custom Counter app! This product was developed by Deep Blue Development LLC.
+                  </Text>
+                  <Text style={[styles.textBody, { color: colors.text }]}>
+                      We welcome your feedback and appreciate you joining the Deep Blue Development community!
+                  </Text>
+              </View>
+              <View style={styles.bottomButtonsContainer}>
+                  <Pressable
+                      style={({ pressed }) => [
+                          {
+                              backgroundColor: pressed ? '#5472d3' : '#002171',
+                          },
+                          styles.button,
+                      ]}
+                      onPress={() => { Linking.openURL('https://www.enterdeepblue.com/contact.html'); }}
+                  >
+                      <Text style={styles.textButton}>
+                          Product Feedback
+                      </Text>
+                  </Pressable>
+                  <Text> </Text>
+                  <Pressable
+                      style={({ pressed }) => [
+                          {
+                              backgroundColor: pressed ? '#5472d3' : '#002171',
+                          },
+                          styles.button,
+                      ]}
+                      onPress={() => { Linking.openURL('https://www.enterdeepblue.com/') }}>
+                      <Text style={styles.textButton}>
+                          Company Web Site
+                      </Text>
+                  </Pressable>
+              </View>
+            </>
+          )}
         </View>
     );
 };

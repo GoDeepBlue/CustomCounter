@@ -18,6 +18,9 @@ const compileNodeModules = [
   'react-native-ratings',
   '@rneui/themed',
   '@rneui/base',
+  '@reduxjs/toolkit',
+  'react-redux',
+  'redux',
 ].map((moduleName) => path.resolve(appDirectory, `node_modules/${moduleName}`));
 
 const babelLoaderConfiguration = {
