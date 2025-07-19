@@ -13,7 +13,6 @@ const RootStack = createStackNavigator();
 
 export default function RootLayout({ appTheme }: { appTheme: Theme }) {
   
-
   return (
       <RootStack.Navigator>
         <RootStack.Group>

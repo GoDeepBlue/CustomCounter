@@ -11,7 +11,8 @@ import {
   View,
 } from 'react-native';
 
-import { default as Ionicons, default as MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+//import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from './styles.js';
 
