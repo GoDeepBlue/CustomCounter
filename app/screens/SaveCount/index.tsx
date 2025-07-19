@@ -7,7 +7,7 @@ import { useTheme } from '@react-navigation/native';
 import { STORAGEKEY } from '../../../assets/constants/AsyncStorageKeys';
 import styles from './styles';
 
-const SaveCountScreen = ({route, navigation}) => {
+const SaveCountScreen = ({ route }) => {
   const [listData, updateListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const {colors} = useTheme();
