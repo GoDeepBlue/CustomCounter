@@ -1,29 +1,49 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import React from 'react';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+import { createStackNavigator } from '@react-navigation/stack';
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+import { Theme } from '@react-navigation/native';
+import CounterSettingsScreen from './screens/CounterSettings';
+import CountPadScreen from './screens/CountPad';
+import StorageDisplayScreen from './screens/GetCounts';
+import SaveCountScreen from './screens/SaveCount';
+
+const RootStack = createStackNavigator();
+
+export default function RootLayout({ appTheme }: { appTheme: Theme }) {
+  
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
-}
+      <RootStack.Navigator>
+        <RootStack.Group>
+          <RootStack.Screen
+            name="Back to Counter"
+            component={CountPadScreen}
+            options={{headerShown: false}}
+          />
+        </RootStack.Group>
+        <RootStack.Group screenOptions={{presentation: 'modal'}}>
+          <RootStack.Screen
+            name="Saved"
+            component={SaveCountScreen}
+            options={{title: 'Count Saved'}}
+          />
+        </RootStack.Group>
+        <RootStack.Group screenOptions={{presentation: 'modal'}}>
+          <RootStack.Screen
+            name="GetCounts"
+            component={StorageDisplayScreen}
+            options={{title: 'Saved Counts'}}
+          />
+        </RootStack.Group>
+        <RootStack.Group screenOptions={{presentation: 'modal'}}>
+          <RootStack.Screen
+            name="SettingsScreen"
+            component={CounterSettingsScreen}
+            initialParams={appTheme}
+            options={{title: 'Counter Settings'}}
+          />
+        </RootStack.Group>
+      </RootStack.Navigator>
+  );}
