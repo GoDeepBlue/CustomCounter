@@ -57,16 +57,20 @@ const SaveCountScreen = ({ route }) => {
   }
 
   const storeData = async () => {
+    console.log("storeData");
     let newListElement = {key: key, count: count, countDate: dateInfo};
     let newListItem = [newListElement];
     let newListData = [...listData, ...newListItem];
 
     updateListData(newListData);
+    console.log("updateListData");
     try {
       await AsyncStorage.setItem(STORAGEKEY, JSON.stringify(newListData));
+      console.log("syncStorage.setItem");
     } catch (error: any) {
       Alert.alert('Error saving', error);
     }
+    console.log("After .. syncStorage.setItem");
   };
 
   return (

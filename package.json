@@ -42,7 +42,7 @@
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
-    "undefined": "react-native-vector-icons/MaterialCommunityIcons"
+    "expo-modules-core": "~2.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

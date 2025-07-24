@@ -29,6 +29,7 @@ const CounterSettingsScreen = () => {
     setIsDarkTheme(!isDarkTheme);
     EventRegister.emit('changeThemeEvent', !isDarkTheme);
     AsyncStorage.setItem(SETTINGSKEY, JSON.stringify(!isDarkTheme));
+    console.log("click",isDarkTheme);
   };
 
   return (

@@ -24,6 +24,7 @@ export default function Index() {
   const getData = async () => {
     const resp: string | null = await AsyncStorage.getItem(SETTINGSKEY);
     if (resp !== null) {
+      console.log("resp:",resp);
       const data = await JSON.parse(resp);
       setIsDarkTheme(data);
     }
