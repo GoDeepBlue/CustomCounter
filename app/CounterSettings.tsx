@@ -1,33 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@react-navigation/native';
-import { Linking, Pressable, Switch, Text, View } from 'react-native';
-import { EventRegister } from 'react-native-event-listeners';
+import { Linking, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+//import { EventRegister } from 'react-native-event-listeners';
 
-import { SETTINGSKEY } from '../../../assets/constants/AsyncStorageKeys';
-import styles from './styles';
+import { useCustomTheme } from './theme-context';
+
+import { SETTINGSKEY } from '../assets/constants/AsyncStorageKeys';
 
 const CounterSettingsScreen = () => {
+  const { colors } = useTheme();
+  const { mode, toggleTheme } = useCustomTheme();
+  
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
-  const appTheme = useTheme();
-  let colors = appTheme.colors;
+  //const appTheme = useTheme();
+  
 
-  useEffect(() => {
-    whatIsAppTheme();
-  }, []);
+  // useEffect(() => {
+  //   whatIsAppTheme();
+  // }, []);
 
-  const whatIsAppTheme = () => {
-    if (appTheme.dark === true) {
-      setIsDarkTheme(true);
-    } else {
-      setIsDarkTheme(false);
-    }
-  };
+  // const whatIsAppTheme = () => {
+  //   if (appTheme.dark === true) {
+  //     setIsDarkTheme(true);
+  //   } else {
+  //     setIsDarkTheme(false);
+  //   }
+  // };
 
-  const toggleTheme = () => {
+  const toggleButton = () => {
     setIsDarkTheme(!isDarkTheme);
-    EventRegister.emit('changeThemeEvent', !isDarkTheme);
+    toggleTheme();
+    console.log('theme',mode)
+    console.log("colors",colors);
+//    EventRegister.emit('changeThemeEvent', !isDarkTheme);
     AsyncStorage.setItem(SETTINGSKEY, JSON.stringify(!isDarkTheme));
     console.log("click",isDarkTheme);
   };
@@ -40,7 +47,7 @@ const CounterSettingsScreen = () => {
         </Text>
         <Switch
           onValueChange={() => {
-            toggleTheme();
+            toggleButton();
           }}
           value={isDarkTheme}
         />
@@ -88,5 +95,51 @@ const CounterSettingsScreen = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  viewBody: {
+      alignItems: 'stretch',
+      width: '100%',
+      height: '100%',
+  },
+  viewSettings: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 10,
+  },
+  viewText: {
+      flex: 2,
+      marginTop: 10,
+  },
+  viewButtons: {
+      flex: 3,
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: 10,
+  },
+  textBody: {
+      padding: 20,
+      fontSize: 15,
+  },
+  textSetting: {
+      padding: 20,
+      fontSize: 15,
+      fontWeight: 'bold',
+  },
+  button: {
+      borderRadius: 8,
+      padding: 10,
+      width: '80%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      elevation: 5,
+  },
+  textButton: {
+      color: 'white',
+      fontSize: 15,
+  },
+
+});
 
 export default CounterSettingsScreen;

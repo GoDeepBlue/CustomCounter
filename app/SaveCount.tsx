@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@react-navigation/native';
+import { useLocalSearchParams } from 'expo-router';
+import { STORAGEKEY } from '../assets/constants/AsyncStorageKeys';
 
-import { STORAGEKEY } from '../../../assets/constants/AsyncStorageKeys';
-import styles from './styles';
-
-const SaveCountScreen = ({ route }) => {
+const SaveCountScreen = () => {
   const [listData, updateListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const {colors} = useTheme();
 
-  const count = route.params;
+  const { value } = useLocalSearchParams(); // 'value' is received as a string
+  const count = Number(value);
+  
   const dateInfo = getFormattedDate();
   const key = getKey();
 
@@ -90,5 +91,22 @@ const SaveCountScreen = ({ route }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 50,
+    padding: 20,
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  titleCell: {
+    marginLeft: 20,
+    height: 30,
+    fontWeight: 'bold',
+  },
+});
 
 export default SaveCountScreen;

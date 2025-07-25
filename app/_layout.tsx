@@ -1,48 +1,49 @@
-import React from 'react';
+import { ThemeProvider } from '@react-navigation/native';
+import { Stack } from 'expo-router';
 
 
-import { createStackNavigator } from '@react-navigation/stack';
+import { ThemeProviderCustom, useCustomTheme } from './theme-context';
 
-import { Theme } from '@react-navigation/native';
-import CounterSettingsScreen from './screens/CounterSettings';
-import CountPadScreen from './screens/CountPad';
-import StorageDisplayScreen from './screens/GetCounts';
-import SaveCountScreen from './screens/SaveCount';
+function ThemeWrapper() {
+  const { theme } = useCustomTheme();
+  return (
+    <ThemeProvider value={theme}>
+      <Stack>
+        <Stack.Screen
+              name="index"
+              options={{headerShown: false}}
+            />
+          <Stack.Screen
+            name="SaveCount"
+            options={{
+              presentation: 'modal',
+              title: 'Count Saved'
+            }}
+          />         
+          <Stack.Screen
+            name="GetCounts"
+            options={{
+              presentation: 'modal',
+              title: 'Saved Counts'
+            }}
+          />
+          <Stack.Screen
+            name="CounterSettings"
+            options={{
+              presentation: 'modal',
+              title: 'Counter Settings'
+            }}
+          />                               
+      </Stack>
+    </ThemeProvider>
+  );
+}
 
-const RootStack = createStackNavigator();
-
-export default function RootLayout({ appTheme }: { appTheme: Theme }) {
+export default function RootLayout() {
   
   return (
-      <RootStack.Navigator>
-        <RootStack.Group>
-          <RootStack.Screen
-            name="Back to Counter"
-            component={CountPadScreen}
-            options={{headerShown: false}}
-          />
-        </RootStack.Group>
-        <RootStack.Group screenOptions={{presentation: 'modal'}}>
-          <RootStack.Screen
-            name="Saved"
-            component={SaveCountScreen}
-            options={{title: 'Count Saved'}}
-          />
-        </RootStack.Group>
-        <RootStack.Group screenOptions={{presentation: 'modal'}}>
-          <RootStack.Screen
-            name="GetCounts"
-            component={StorageDisplayScreen}
-            options={{title: 'Saved Counts'}}
-          />
-        </RootStack.Group>
-        <RootStack.Group screenOptions={{presentation: 'modal'}}>
-          <RootStack.Screen
-            name="SettingsScreen"
-            component={CounterSettingsScreen}
-            initialParams={appTheme}
-            options={{title: 'Counter Settings'}}
-          />
-        </RootStack.Group>
-      </RootStack.Navigator>
-  );}
+    <ThemeProviderCustom>
+      <ThemeWrapper />
+    </ThemeProviderCustom>
+  );
+}

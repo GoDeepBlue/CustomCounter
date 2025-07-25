@@ -6,4 +6,3 @@ export type RootStackParamList = {
       userName: string;
     };
   };
-  
