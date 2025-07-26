@@ -121,7 +121,6 @@ export default function HomeScreen() {
               styles.countPadButton,
             ]}
             onPress={() => incrementCount()}>
-            <Text />
           </Pressable>
         </View>
       </View>

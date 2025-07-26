@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     topToolbar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 10,
+        marginTop: Platform.OS === 'android' ? 50 : 5, // or whatever value you want
         marginLeft: 10,
         marginRight: 10,
     },
