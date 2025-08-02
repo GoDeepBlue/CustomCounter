@@ -1,3 +1,5 @@
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import {
   Alert,
@@ -11,14 +13,12 @@ import {
   View,
 } from 'react-native';
 
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
-//import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import styles from './styles';
 
 export default function HomeScreen() {
+  
   const [count, setCount] = useState<number>(0);
+
 
   function resetCount() {
     setCount(0);

@@ -2,7 +2,7 @@ import { ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 
 
-import { ThemeProviderCustom, useCustomTheme } from './theme-context';
+import { ThemeProviderCustom, useCustomTheme } from '../assets/theme-context';
 
 function ThemeWrapper() {
   const { theme } = useCustomTheme();

@@ -41,7 +41,7 @@ const GetCountsScreen = () => {
     if (resp !== null) {
       const data = await JSON.parse(resp);
       updateListData(data);
-      console.log('GetCounts ~ getData ~ data', data);
+      //console.log('GetCounts ~ getData ~ data', data);
     }
     setLoading(false);
   };
@@ -61,23 +61,23 @@ const GetCountsScreen = () => {
   };
 
   const onRowDidOpen = rowKey => {
-    console.log('This row opened', rowKey);
+    //console.log('This row opened', rowKey);
   };
 
   const onLeftActionStatusChange = rowKey => {
-    console.log('onLeftActionStatusChange', rowKey);
+    //console.log('onLeftActionStatusChange', rowKey);
   };
 
   const onRightActionStatusChange = rowKey => {
-    console.log('onRightActionStatusChange', rowKey);
+    //console.log('onRightActionStatusChange', rowKey);
   };
 
   const onRightAction = rowKey => {
-    console.log('onRightAction', rowKey);
+    //console.log('onRightAction', rowKey);
   };
 
   const onLeftAction = rowKey => {
-    console.log('onLeftAction', rowKey);
+    //console.log('onLeftAction', rowKey);
   };
 
   const VisibleItem = props => {

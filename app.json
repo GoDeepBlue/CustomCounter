@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "CustomCounter",
+    "name": "Custom Counter",
     "slug": "CustomCounter",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "customcounter",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.CustomCounter"
+      "bundleIdentifier": "com.DeepBlueDev.CustomCounter"
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +18,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.CustomCounter"
+      "package": "com.DeepBlueDev.CustomCounter"
     },
     "web": {
       "bundler": "metro",
@@ -31,7 +31,6 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }

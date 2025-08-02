@@ -1,43 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@react-navigation/native';
 import { Linking, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
-//import { EventRegister } from 'react-native-event-listeners';
 
-import { useCustomTheme } from './theme-context';
-
-import { SETTINGSKEY } from '../assets/constants/AsyncStorageKeys';
+import { useCustomTheme } from '../assets/theme-context';
 
 const CounterSettingsScreen = () => {
   const { colors } = useTheme();
   const { mode, toggleTheme } = useCustomTheme();
-  
-  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
-  //const appTheme = useTheme();
-  
-
-  // useEffect(() => {
-  //   whatIsAppTheme();
-  // }, []);
-
-  // const whatIsAppTheme = () => {
-  //   if (appTheme.dark === true) {
-  //     setIsDarkTheme(true);
-  //   } else {
-  //     setIsDarkTheme(false);
-  //   }
-  // };
-
-  const toggleButton = () => {
-    setIsDarkTheme(!isDarkTheme);
-    toggleTheme();
-    console.log('theme',mode)
-    console.log("colors",colors);
-//    EventRegister.emit('changeThemeEvent', !isDarkTheme);
-    AsyncStorage.setItem(SETTINGSKEY, JSON.stringify(!isDarkTheme));
-    console.log("click",isDarkTheme);
-  };
 
   return (
     <View style={[styles.viewBody, {backgroundColor: colors.background}]}>
@@ -47,21 +17,21 @@ const CounterSettingsScreen = () => {
         </Text>
         <Switch
           onValueChange={() => {
-            toggleButton();
+            toggleTheme();
           }}
-          value={isDarkTheme}
+          value={mode === 'dark'}
         />
         <Text style={{fontStyle: 'italic', color: colors.text}}>
-          ({isDarkTheme ? 'On' : 'Off'})
+          ({mode === 'dark' ? 'On' : 'Off'})
         </Text>
       </View>
       <View style={styles.viewText}>
         <Text style={[styles.textBody, {color: colors.text}]}>
-          Thank you for using the Custom Counter app! This product was devloped
+          Thank you for using the Custom Counter app! This product was developed
           by Deep Blue Development LLC.
         </Text>
         <Text style={[styles.textBody, {color: colors.text}]}>
-          We welcome your feedback and appriciate you joining the Deep Blue
+          We welcome your feedback and appreciate you joining the Deep Blue
           Development community!
         </Text>
       </View>

@@ -13,7 +13,7 @@ const SaveCountScreen = () => {
 
   const { value } = useLocalSearchParams(); // 'value' is received as a string
   const count = Number(value);
-  
+
   const dateInfo = getFormattedDate();
   const key = getKey();
 
@@ -58,20 +58,20 @@ const SaveCountScreen = () => {
   }
 
   const storeData = async () => {
-    console.log("storeData");
+    //console.log("storeData");
     let newListElement = {key: key, count: count, countDate: dateInfo};
     let newListItem = [newListElement];
     let newListData = [...listData, ...newListItem];
 
     updateListData(newListData);
-    console.log("updateListData");
+    //console.log("updateListData");
     try {
       await AsyncStorage.setItem(STORAGEKEY, JSON.stringify(newListData));
-      console.log("syncStorage.setItem");
+      //console.log("syncStorage.setItem");
     } catch (error: any) {
       Alert.alert('Error saving', error);
     }
-    console.log("After .. syncStorage.setItem");
+    //console.log("After .. syncStorage.setItem");
   };
 
   return (
