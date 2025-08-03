@@ -1,4 +1,4 @@
-package com.anonymous.CustomCounter
+package com.DeepBlueDev.Counter
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

@@ -87,13 +87,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.anonymous.CustomCounter'
+    namespace 'com.DeepBlueDev.Counter'
     defaultConfig {
-        applicationId 'com.anonymous.CustomCounter'
+        applicationId 'com.DeepBlueDev.CustomCounter'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.0"
+        versionName "3.1.0"
     }
     signingConfigs {
         debug {
@@ -145,6 +145,11 @@ android {
             android.packagingOptions[prop] += it
         }
     }
+}
+
+// Remove any old support library dependencies
+configurations.all {
+    exclude group: 'com.android.support'
 }
 
 dependencies {
