@@ -1,8 +1,10 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTheme } from '@react-navigation/native';
 import { Link } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Alert,
+  Animated,
   Dimensions,
   Platform,
   Pressable,
@@ -14,10 +16,15 @@ import {
 } from 'react-native';
 
 import styles from './styles';
+import { useCustomTheme } from '../assets/theme-context';
 
 export default function HomeScreen() {
   
   const [count, setCount] = useState<number>(0);
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const { colors } = useTheme();
+  const { mode } = useCustomTheme();
 
 
   function resetCount() {
@@ -34,7 +41,36 @@ export default function HomeScreen() {
 
   function incrementCount() {
     setCount(count + 1);
+    // Trigger pulse animation
+    Animated.sequence([
+      Animated.timing(pulseAnim, {
+        toValue: 1.1,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(pulseAnim, {
+        toValue: 1,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+    ]).start();
   }
+
+  const onPressIn = () => {
+    Animated.timing(scaleAnim, {
+      toValue: 0.95,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const onPressOut = () => {
+    Animated.timing(scaleAnim, {
+      toValue: 1,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const shareCounts = async () => {
     try {
@@ -55,74 +91,122 @@ export default function HomeScreen() {
     }
   };
   return (
-    <SafeAreaView>
-      <View>
+    <SafeAreaView style={{backgroundColor: colors.background, flex: 1}}>
+      <View style={{flex: 1}}>
         <View style={styles.topToolbar}>
-          <Ionicons
-            name="close-circle"
-            style={styles.topToolbarIcons}
-            onPress={() => resetCount()}
-          />
-          <Ionicons
-            name="remove-circle"
-            style={styles.topToolbarIcons}
-            onPress={() => decrementCount()}
-          />
-          <MaterialCommunityIcons
-            name="numeric-2-circle"
-            style={styles.topToolbarIcons}
-            onPress={() => incrementCountByTwo()}
-          />
-          <Ionicons
-            name="share"
-            style={styles.topToolbarIcons}
-            onPress={() => shareCounts()}
-          />
-          <Link href={{
-            pathname: "/SaveCount",
-            params: {value: count}
-          }} asChild>
+          <Pressable
+            style={({pressed}) => [
+              styles.iconContainer,
+              pressed && styles.iconContainerPressed,
+            ]}
+            onPress={() => resetCount()}>
+            <Text style={[styles.topToolbarIcons, {fontSize: 20, fontWeight: 'bold'}]}>
+              C
+            </Text>
+          </Pressable>
+          <Pressable
+            style={({pressed}) => [
+              styles.iconContainer,
+              pressed && styles.iconContainerPressed,
+            ]}
+            onPress={() => decrementCount()}>
             <Ionicons
-              name="download"
+              name="remove-circle-outline"
               style={styles.topToolbarIcons}
             />
-          </Link>
-          <Link href="/GetCounts" asChild>
-            <Ionicons
-              name="list-circle"
+          </Pressable>
+          <Pressable
+            style={({pressed}) => [
+              styles.iconContainer,
+              pressed && styles.iconContainerPressed,
+            ]}
+            onPress={() => incrementCountByTwo()}>
+            <MaterialCommunityIcons
+              name="numeric-2-circle-outline"
               style={styles.topToolbarIcons}
             />
-          </Link>          
-          <Link href="/CounterSettings" asChild>
+          </Pressable>
+          <Pressable
+            style={({pressed}) => [
+              styles.iconContainer,
+              pressed && styles.iconContainerPressed,
+            ]}
+            onPress={() => shareCounts()}>
             <Ionicons
-              name="settings"
+              name="share-outline"
               style={styles.topToolbarIcons}
             />
-          </Link>
+          </Pressable>
+          <Pressable
+            style={({pressed}) => [
+              styles.iconContainer,
+              pressed && styles.iconContainerPressed,
+            ]}>
+            <Link href={{
+              pathname: "/SaveCount",
+              params: {value: count}
+            }} asChild>
+              <Ionicons
+                name="download-outline"
+                style={styles.topToolbarIcons}
+              />
+            </Link>
+          </Pressable>
+          <Pressable
+            style={({pressed}) => [
+              styles.iconContainer,
+              pressed && styles.iconContainerPressed,
+            ]}>
+            <Link href="/GetCounts" asChild>
+              <Ionicons
+                name="list-circle-outline"
+                style={styles.topToolbarIcons}
+              />
+            </Link>
+          </Pressable>          
+          <Pressable
+            style={({pressed}) => [
+              styles.iconContainer,
+              pressed && styles.iconContainerPressed,
+            ]}>
+            <Link href="/CounterSettings" asChild>
+              <Ionicons
+                name="settings-outline"
+                style={styles.topToolbarIcons}
+              />
+            </Link>
+          </Pressable>
         </View>
-        <View>
-          <Text style={styles.countPadNumber}>Count: {count}</Text>
-        </View>
-        <View>
+        <Animated.View style={{transform: [{scale: pulseAnim}]}}>
+          <Text style={[styles.countPadNumber, {color: colors.text}]}>Count: {count}</Text>
+        </Animated.View>
+        <Animated.View style={{
+          transform: [{scale: scaleAnim}],
+          paddingHorizontal: 20,
+          paddingBottom: 20,
+          marginTop: 50,
+        }}>
           <Pressable
             style={({pressed}) => [
               {
-                width: pressed
-                  ? Dimensions.get('window').width - 25
-                  : Dimensions.get('window').width - 20,
+                width: '100%',
                 height: pressed
                   ? Platform.OS === 'ios'
-                    ? Dimensions.get('window').height - 305
-                    : Dimensions.get('window').height - 365
+                    ? Dimensions.get('window').height - 325
+                    : Dimensions.get('window').height - 385
                   : Platform.OS === 'ios'
-                  ? Dimensions.get('window').height - 300
-                  : Dimensions.get('window').height - 360,
+                  ? Dimensions.get('window').height - 320
+                  : Dimensions.get('window').height - 380,
               },
               styles.countPadButton,
+              pressed && styles.countPadButtonPressed,
             ]}
+            onPressIn={onPressIn}
+            onPressOut={onPressOut}
             onPress={() => incrementCount()}>
+            <View style={styles.countPadButtonInner} />
           </Pressable>
-        </View>
+        </Animated.View>
       </View>
     </SafeAreaView>
   );

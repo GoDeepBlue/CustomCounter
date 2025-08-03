@@ -4,6 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import { Linking, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 
 import { useCustomTheme } from '../assets/theme-context';
+import packageJson from '../package.json';
 
 const CounterSettingsScreen = () => {
   const { colors } = useTheme();
@@ -62,6 +63,11 @@ const CounterSettingsScreen = () => {
           <Text style={styles.textButton}>Company Web Site</Text>
         </Pressable>
       </View>
+      <View style={styles.versionContainer}>
+        <Text style={[styles.versionText, {color: colors.text}]}>
+          App Version: {packageJson.version}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -108,6 +114,14 @@ const styles = StyleSheet.create({
   textButton: {
       color: 'white',
       fontSize: 15,
+  },
+  versionContainer: {
+      paddingBottom: 20,
+      alignItems: 'center',
+  },
+  versionText: {
+      fontSize: 14,
+      opacity: 0.7,
   },
 
 });
