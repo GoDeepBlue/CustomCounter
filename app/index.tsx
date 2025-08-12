@@ -1,7 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import { Link } from 'expo-router';
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Alert,
   Animated,
@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 
 import styles from './styles';
-import { useCustomTheme } from '../assets/theme-context';
 
 export default function HomeScreen() {
   
@@ -24,7 +23,6 @@ export default function HomeScreen() {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const { colors } = useTheme();
-  const { mode } = useCustomTheme();
 
 
   function resetCount() {
@@ -138,43 +136,47 @@ export default function HomeScreen() {
             />
           </Pressable>
           <Pressable
-            style={({pressed}) => [
-              styles.iconContainer,
-              pressed && styles.iconContainerPressed,
-            ]}>
-            <Link href={{
-              pathname: "/SaveCount",
-              params: {value: count}
-            }} asChild>
+              style={({pressed}) => [
+                styles.iconContainer,
+                pressed && styles.iconContainerPressed,
+              ]}> 
+          <Link href={{
+            pathname: "/SaveCount",
+            params: {value: count}
+          }} asChild>
               <Ionicons
                 name="download-outline"
                 style={styles.topToolbarIcons}
               />
-            </Link>
-          </Pressable>
-          <Pressable
-            style={({pressed}) => [
-              styles.iconContainer,
-              pressed && styles.iconContainerPressed,
-            ]}>
-            <Link href="/GetCounts" asChild>
+          </Link>
+           </Pressable>
+                       <Pressable
+              style={({pressed}) => [
+                styles.iconContainer,
+                pressed && styles.iconContainerPressed,
+              ]}>
+          <Link href="/GetCounts" asChild>
+
               <Ionicons
                 name="list-circle-outline"
                 style={styles.topToolbarIcons}
               />
-            </Link>
-          </Pressable>          
-          <Pressable
-            style={({pressed}) => [
-              styles.iconContainer,
-              pressed && styles.iconContainerPressed,
-            ]}>
-            <Link href="/CounterSettings" asChild>
+            
+          </Link> 
+          </Pressable> 
+                     <Pressable
+              style={({pressed}) => [
+                styles.iconContainer,
+                pressed && styles.iconContainerPressed,
+              ]}>        
+          <Link href="/CounterSettings" asChild>
+ 
               <Ionicons
                 name="settings-outline"
                 style={styles.topToolbarIcons}
               />
-            </Link>
+            
+          </Link>
           </Pressable>
         </View>
         <Animated.View style={{transform: [{scale: pulseAnim}]}}>

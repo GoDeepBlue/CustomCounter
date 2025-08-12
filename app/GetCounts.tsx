@@ -1,4 +1,5 @@
 import { useTheme } from '@react-navigation/native';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
@@ -18,14 +19,8 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { STORAGEKEY } from '../assets/constants/AsyncStorageKeys';
 
 const GetCountsScreen = () => {
-  interface ListData {
-    key: number;
-    count: number;
-    countDate: dateInfo;
-  }
-
   const [listData, updateListData] = useState([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [, setLoading] = useState<boolean>(true);
   const {colors} = useTheme();
 
   useEffect(() => {
@@ -60,13 +55,27 @@ const GetCountsScreen = () => {
     updateListData(newData);
   };
 
+  const openEditModal = (rowMap, item) => {
+    closeRow(rowMap, item.key);
+    // Navigate to SaveCount screen with existing data for editing
+    router.push({
+      pathname: '/SaveCount',
+      params: {
+        value: item.count.toString(),
+        editMode: 'true',
+        existingKey: item.key.toString(),
+        existingName: item.name || '',
+        existingDate: item.countDate,
+      },
+    });
+  };
+
+  // Remove the inline edit modal functionality as we're navigating to SaveCount screen
+
   const onRowDidOpen = rowKey => {
     //console.log('This row opened', rowKey);
   };
 
-  const onLeftActionStatusChange = rowKey => {
-    //console.log('onLeftActionStatusChange', rowKey);
-  };
 
   const onRightActionStatusChange = rowKey => {
     //console.log('onRightActionStatusChange', rowKey);
@@ -76,16 +85,12 @@ const GetCountsScreen = () => {
     //console.log('onRightAction', rowKey);
   };
 
-  const onLeftAction = rowKey => {
-    //console.log('onLeftAction', rowKey);
-  };
 
   const VisibleItem = props => {
     const {
       data,
       rowHeightAnimatedValue,
       removeRow,
-      leftActionState,
       rightActionState,
     } = props;
 
@@ -104,9 +109,12 @@ const GetCountsScreen = () => {
         style={[styles.rowFront, {height: rowHeightAnimatedValue}]}>
         <TouchableHighlight
           style={styles.rowFrontVisible}
-          onPress={() => console.log('Element touched')}
+          onPress={() => {}}
           underlayColor={'#aaa'}>
           <View>
+            <Text style={styles.countName} numberOfLines={1}>
+              {data.item.name || 'Unnamed Count'}
+            </Text>
             <Text style={styles.title} numberOfLines={1}>
               Count: {data.item.count}
             </Text>
@@ -120,7 +128,7 @@ const GetCountsScreen = () => {
   };
 
   const renderItem = (data, rowMap) => {
-    const rowHeightAnimatedValue = new Animated.Value(60);
+    const rowHeightAnimatedValue = new Animated.Value(75);
 
     return (
       <VisibleItem
@@ -134,12 +142,12 @@ const GetCountsScreen = () => {
   const HiddenItemWithActions = props => {
     const {
       swipeAnimatedValue,
-      leftActionActivated,
       rightActionActivated,
       rowActionAnimatedValue,
       rowHeightAnimatedValue,
       onClose,
       onDelete,
+      onEdit,
     } = props;
 
     if (rightActionActivated) {
@@ -156,21 +164,27 @@ const GetCountsScreen = () => {
 
     return (
       <Animated.View style={[styles.rowBack, {height: rowHeightAnimatedValue}]}>
-        <Text>Left</Text>
-        {!leftActionActivated && (
-          <TouchableOpacity
-            style={[styles.backRightBtn, styles.backRightBtnLeft]}
-            onPress={onClose}>
-            <MaterialCommunityIcons
-              name="close-circle-outline"
-              size={25}
-              style={styles.trash}
-              color="#fff"
-            />
-          </TouchableOpacity>
-        )}
-        {!leftActionActivated && (
-          <Animated.View
+        <TouchableOpacity
+          style={[styles.backLeftBtn, styles.backLeftBtnEdit]}
+          onPress={onEdit}>
+          <MaterialCommunityIcons
+            name="pencil"
+            size={25}
+            style={styles.trash}
+            color="#fff"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.backRightBtn, styles.backRightBtnLeft]}
+          onPress={onClose}>
+          <MaterialCommunityIcons
+            name="close-circle-outline"
+            size={25}
+            style={styles.trash}
+            color="#fff"
+          />
+        </TouchableOpacity>
+        <Animated.View
             style={[
               styles.backRightBtn,
               styles.backRightBtnRight,
@@ -205,14 +219,13 @@ const GetCountsScreen = () => {
               </Animated.View>
             </TouchableOpacity>
           </Animated.View>
-        )}
       </Animated.View>
     );
   };
 
   const renderHiddenItem = (data, rowMap) => {
     const rowActionAnimatedValue = new Animated.Value(75);
-    const rowHeightAnimatedValue = new Animated.Value(60);
+    const rowHeightAnimatedValue = new Animated.Value(75);
 
     return (
       <HiddenItemWithActions
@@ -222,6 +235,7 @@ const GetCountsScreen = () => {
         rowHeightAnimatedValue={rowHeightAnimatedValue}
         onClose={() => closeRow(rowMap, data.item.key)}
         onDelete={() => deleteRow(rowMap, data.item.key)}
+        onEdit={() => openEditModal(rowMap, data.item)}
       />
     );
   };
@@ -263,17 +277,12 @@ const GetCountsScreen = () => {
         data={listData}
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
-        leftOpenValue={75}
+        leftOpenValue={80}
         rightOpenValue={-150}
-        disableRightSwipe
+        stopLeftSwipe={80}
         onRowDidOpen={onRowDidOpen}
-        leftActivationValue={100}
-        rightActivationValue={-200}
-        leftActionValue={0}
         rightActionValue={-500}
-        onLeftAction={onLeftAction}
         onRightAction={onRightAction}
-        onLeftActionStatusChange={onLeftActionStatusChange}
         onRightActionStatusChange={onRightActionStatusChange}
       />
       {(() => {
@@ -311,9 +320,6 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
   },
-  title: {
-    fontSize: 32,
-  },
   container: {
     backgroundColor: '#f4f4f4',
     flex: 1,
@@ -324,7 +330,7 @@ const styles = StyleSheet.create({
   rowFront: {
     backgroundColor: '#FFF',
     borderRadius: 5,
-    height: 60,
+    height: 75,
     margin: 5,
     marginBottom: 15,
     shadowColor: '#999',
@@ -336,9 +342,10 @@ const styles = StyleSheet.create({
   rowFrontVisible: {
     backgroundColor: '#FFF',
     borderRadius: 5,
-    height: 60,
+    height: 75,
     padding: 10,
     marginBottom: 15,
+    justifyContent: 'center',
   },
   rowBack: {
     alignItems: 'center',
@@ -364,6 +371,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#1f65ff',
     right: 75,
   },
+  backLeftBtn: {
+    alignItems: 'flex-start',
+    bottom: 0,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    width: 75,
+    paddingLeft: 17,
+  },
+  backLeftBtnEdit: {
+    backgroundColor: '#4CAF50',
+    left: 0,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+  },
   backRightBtnRight: {
     backgroundColor: 'red',
     right: 0,
@@ -375,15 +397,76 @@ const styles = StyleSheet.create({
     width: 25,
     marginRight: 7,
   },
+  details: {
+    fontSize: 12,
+    color: '#999',
+  },
   title: {
     fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 5,
     color: '#666',
   },
-  details: {
-    fontSize: 12,
-    color: '#999',
+  countName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    color: '#2196F3',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    width: '85%',
+    borderRadius: 20,
+    padding: 25,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  modalButton: {
+    borderRadius: 8,
+    padding: 10,
+    paddingHorizontal: 30,
+    elevation: 2,
+  },
+  cancelButton: {
+    backgroundColor: '#999',
+  },
+  saveButton: {
+    backgroundColor: '#4CAF50',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
