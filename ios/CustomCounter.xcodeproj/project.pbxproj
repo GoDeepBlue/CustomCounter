@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		12F75F69727CBBCD7DC67370 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD00542DE2D77FC28E3D9AC1 /* ExpoModulesProvider.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		49788B5432B01DDFDEFD95F5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D24225A72DEA816871BD3E0C /* PrivacyInfo.xcprivacy */; };
+		89654E3D764D1DAF4B4B8ECD /* libPods-CustomCounter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41BDC93C9BE6428A31FFF9E3 /* libPods-CustomCounter.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		DD6C63ED8B3CC05EC903AC2B /* libPods-CustomCounter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF4D91918BF578625DA492C6 /* libPods-CustomCounter.a */; };
+		D96D2ECF8B4C5A65A0E8BFE1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 427907A3010446A4122C84DC /* PrivacyInfo.xcprivacy */; };
+		F106C3EFB757B405B1BCAEAC /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD6AD1685D46D9F5486D2CC /* ExpoModulesProvider.swift */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -20,13 +20,13 @@
 		13B07F961A680F5B00A75B9A /* CustomCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CustomCounter/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CustomCounter/Info.plist; sourceTree = "<group>"; };
-		98F4D246DA3111B0D9954B71 /* Pods-CustomCounter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomCounter.release.xcconfig"; path = "Target Support Files/Pods-CustomCounter/Pods-CustomCounter.release.xcconfig"; sourceTree = "<group>"; };
-		A69C9CC2DE4F7453501734C9 /* Pods-CustomCounter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomCounter.debug.xcconfig"; path = "Target Support Files/Pods-CustomCounter/Pods-CustomCounter.debug.xcconfig"; sourceTree = "<group>"; };
+		41BDC93C9BE6428A31FFF9E3 /* libPods-CustomCounter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CustomCounter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		427907A3010446A4122C84DC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = CustomCounter/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		4AD6AD1685D46D9F5486D2CC /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-CustomCounter/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		7EA73202F0BB88AA0CAA1C48 /* Pods-CustomCounter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomCounter.debug.xcconfig"; path = "Target Support Files/Pods-CustomCounter/Pods-CustomCounter.debug.xcconfig"; sourceTree = "<group>"; };
+		A88D3225F364D01FCB69B5F6 /* Pods-CustomCounter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomCounter.release.xcconfig"; path = "Target Support Files/Pods-CustomCounter/Pods-CustomCounter.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = CustomCounter/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		BD00542DE2D77FC28E3D9AC1 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-CustomCounter/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		BF4D91918BF578625DA492C6 /* libPods-CustomCounter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CustomCounter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D24225A72DEA816871BD3E0C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = CustomCounter/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = CustomCounter/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* CustomCounter-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CustomCounter-Bridging-Header.h"; path = "CustomCounter/CustomCounter-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -37,21 +37,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD6C63ED8B3CC05EC903AC2B /* libPods-CustomCounter.a in Frameworks */,
+				89654E3D764D1DAF4B4B8ECD /* libPods-CustomCounter.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0C57B08C3983E4565B665113 /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				291B3E7C3C5519E86A9A2502 /* CustomCounter */,
-			);
-			name = ExpoModulesProviders;
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* CustomCounter */ = {
 			isa = PBXGroup;
 			children = (
@@ -61,15 +53,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				D24225A72DEA816871BD3E0C /* PrivacyInfo.xcprivacy */,
-			);
-			name = CustomCounter;
-			sourceTree = "<group>";
-		};
-		291B3E7C3C5519E86A9A2502 /* CustomCounter */ = {
-			isa = PBXGroup;
-			children = (
-				BD00542DE2D77FC28E3D9AC1 /* ExpoModulesProvider.swift */,
+				427907A3010446A4122C84DC /* PrivacyInfo.xcprivacy */,
 			);
 			name = CustomCounter;
 			sourceTree = "<group>";
@@ -78,9 +62,34 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				BF4D91918BF578625DA492C6 /* libPods-CustomCounter.a */,
+				41BDC93C9BE6428A31FFF9E3 /* libPods-CustomCounter.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		31DEA4DCB467B86BC4B6F708 /* CustomCounter */ = {
+			isa = PBXGroup;
+			children = (
+				4AD6AD1685D46D9F5486D2CC /* ExpoModulesProvider.swift */,
+			);
+			name = CustomCounter;
+			sourceTree = "<group>";
+		};
+		5D781E8DEF87C4E1CD0FD743 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				31DEA4DCB467B86BC4B6F708 /* CustomCounter */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		695EC4D5AD3BF597DA62C258 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7EA73202F0BB88AA0CAA1C48 /* Pods-CustomCounter.debug.xcconfig */,
+				A88D3225F364D01FCB69B5F6 /* Pods-CustomCounter.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -97,8 +106,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				CDF742BAE1CD58F5C165F9D2 /* Pods */,
-				0C57B08C3983E4565B665113 /* ExpoModulesProviders */,
+				695EC4D5AD3BF597DA62C258 /* Pods */,
+				5D781E8DEF87C4E1CD0FD743 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -122,15 +131,6 @@
 			path = CustomCounter/Supporting;
 			sourceTree = "<group>";
 		};
-		CDF742BAE1CD58F5C165F9D2 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A69C9CC2DE4F7453501734C9 /* Pods-CustomCounter.debug.xcconfig */,
-				98F4D246DA3111B0D9954B71 /* Pods-CustomCounter.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -139,13 +139,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CustomCounter" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				14524DCEBD7F9CF873EA26CA /* [Expo] Configure project */,
+				DE743E3A1FF2F6A4E00E6429 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				117648E5D5BE8E3512271B6E /* [CP] Embed Pods Frameworks */,
+				77492D78DC412F880C88E10A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -195,7 +195,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				49788B5432B01DDFDEFD95F5 /* PrivacyInfo.xcprivacy in Resources */,
+				D96D2ECF8B4C5A65A0E8BFE1 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +239,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		117648E5D5BE8E3512271B6E /* [CP] Embed Pods Frameworks */ = {
+		77492D78DC412F880C88E10A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -256,25 +256,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CustomCounter/Pods-CustomCounter-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		14524DCEBD7F9CF873EA26CA /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-CustomCounter/expo-configure-project.sh\"\n";
 		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -314,6 +295,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CustomCounter/Pods-CustomCounter-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		DE743E3A1FF2F6A4E00E6429 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-CustomCounter/expo-configure-project.sh\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -322,7 +322,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				12F75F69727CBBCD7DC67370 /* ExpoModulesProvider.swift in Sources */,
+				F106C3EFB757B405B1BCAEAC /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,14 +331,12 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A69C9CC2DE4F7453501734C9 /* Pods-CustomCounter.debug.xcconfig */;
+			baseConfigurationReference = 7EA73202F0BB88AA0CAA1C48 /* Pods-CustomCounter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CustomCounter/CustomCounter.entitlements;
-				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = HYHV9563K3;
+				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -347,7 +345,7 @@
 				INFOPLIST_FILE = CustomCounter/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Custom Counter";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -359,7 +357,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.DeepBlueDev.Counter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DeepBlueDev.CustomCounter;
 				PRODUCT_NAME = CustomCounter;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -375,18 +373,17 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 98F4D246DA3111B0D9954B71 /* Pods-CustomCounter.release.xcconfig */;
+			baseConfigurationReference = A88D3225F364D01FCB69B5F6 /* Pods-CustomCounter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CustomCounter/CustomCounter.entitlements;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HYHV9563K3;
 				INFOPLIST_FILE = CustomCounter/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Custom Counter";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -398,7 +395,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.DeepBlueDev.Counter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DeepBlueDev.CustomCounter;
 				PRODUCT_NAME = CustomCounter;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

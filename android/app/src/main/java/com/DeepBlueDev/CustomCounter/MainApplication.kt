@@ -1,4 +1,4 @@
-package com.DeepBlueDev.Counter
+package com.DeepBlueDev.CustomCounter
 
 import android.app.Application
 import android.content.res.Configuration
