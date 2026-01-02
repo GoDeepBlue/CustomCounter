@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     countPadButton: {
         alignSelf: 'center',
         borderRadius: 40,
-        backgroundColor: '#2196F3',
         // 3D elevation and shadows
         ...Platform.select({
             ios: {
@@ -113,7 +112,6 @@ const styles = StyleSheet.create({
         borderTopColor: 'rgba(255, 255, 255, 0.3)',
     },
     countPadButtonPressed: {
-        backgroundColor: '#1976D2',
         ...Platform.select({
             ios: {
                 shadowOffset: {

@@ -9,12 +9,20 @@ type ThemeMode = 'light' | 'dark';
 interface ThemeContextType {
   mode: ThemeMode;
   theme: Theme;
+  padColor: string;
+  iconColor: string;
   setMode: (mode: ThemeMode) => void;
+  setPadColor: (color: string) => void;
+  setIconColor: (color: string) => void;
   setThemeColors: (lightTheme: Theme, darkTheme: Theme) => void;
   toggleTheme: () => void;
 }
 
 const THEME_STORAGE_KEY = 'themeMode';
+const PAD_COLOR_STORAGE_KEY = 'padColor';
+const ICON_COLOR_STORAGE_KEY = 'iconColor';
+const DEFAULT_PAD_COLOR = '#2196F3';
+const DEFAULT_ICON_COLOR = '#2196F3';
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProviderCustom({ children }: { children: React.ReactNode }) {
@@ -22,6 +30,8 @@ export function ThemeProviderCustom({ children }: { children: React.ReactNode })
   const [mode, setModeState] = useState<ThemeMode>('light');
   const [lightTheme, setLightTheme] = useState<Theme>(MyLightTheme);
   const [darkTheme, setDarkTheme] = useState<Theme>(MyDarkTheme);
+  const [padColor, setPadColorState] = useState<string>(DEFAULT_PAD_COLOR);
+  const [iconColor, setIconColorState] = useState<string>(DEFAULT_ICON_COLOR);
 
   const theme = mode === 'dark' ? darkTheme : lightTheme;
 
@@ -34,28 +44,52 @@ export function ThemeProviderCustom({ children }: { children: React.ReactNode })
   };
 
   const toggleTheme = () => setMode(mode === 'dark' ? 'light' : 'dark');
-  
+
   const setThemeColors = (lt: Theme, dt: Theme) => {
     setLightTheme(lt);
     setDarkTheme(dt);
   };
 
+  const setPadColor = (color: string) => {
+    setPadColorState(color);
+    AsyncStorage.setItem(PAD_COLOR_STORAGE_KEY, color).catch(err =>
+      console.error('Error saving pad color:', err)
+    );
+  };
+
+  const setIconColor = (color: string) => {
+    setIconColorState(color);
+    AsyncStorage.setItem(ICON_COLOR_STORAGE_KEY, color).catch(err =>
+      console.error('Error saving icon color:', err)
+    );
+  };
+
     // Run on app startup
     useEffect(() => {
-      const loadTheme = async () => {
+      const loadSettings = async () => {
         try {
-          const storedMode = await AsyncStorage.getItem(THEME_STORAGE_KEY);
+          const [storedMode, storedPadColor, storedIconColor] = await Promise.all([
+            AsyncStorage.getItem(THEME_STORAGE_KEY),
+            AsyncStorage.getItem(PAD_COLOR_STORAGE_KEY),
+            AsyncStorage.getItem(ICON_COLOR_STORAGE_KEY),
+          ]);
           if (storedMode === 'light' || storedMode === 'dark') {
             setModeState(storedMode);
           } else if (systemScheme) {
             // Default to system preference
             setModeState(systemScheme);
           }
+          if (storedPadColor) {
+            setPadColorState(storedPadColor);
+          }
+          if (storedIconColor) {
+            setIconColorState(storedIconColor);
+          }
         } catch (err) {
-          console.error('Error loading theme:', err);
+          console.error('Error loading settings:', err);
         }
       };
-      loadTheme();
+      loadSettings();
     }, [systemScheme]);
 
   return (
@@ -63,7 +97,11 @@ export function ThemeProviderCustom({ children }: { children: React.ReactNode })
       value={{
         mode,
         theme,
+        padColor,
+        iconColor,
         setMode,
+        setPadColor,
+        setIconColor,
         setThemeColors,
         toggleTheme,
       }}

@@ -15,14 +15,24 @@ import {
   View,
 } from 'react-native';
 
+import { useCustomTheme } from '../assets/theme-context';
 import styles from './styles';
 
+function adjustBrightness(hex: string, amount: number): string {
+  const num = parseInt(hex.replace('#', ''), 16);
+  const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
+  const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+}
+
 export default function HomeScreen() {
-  
+
   const [count, setCount] = useState<number>(0);
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const { colors } = useTheme();
+  const { padColor, iconColor } = useCustomTheme();
 
 
   function resetCount() {
@@ -95,7 +105,7 @@ export default function HomeScreen() {
           <Pressable
             style={({pressed}) => [
               styles.iconContainer,
-              pressed && styles.iconContainerPressed,
+              { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
             ]}
             onPress={() => resetCount()}>
             <Text style={[styles.topToolbarIcons, {fontSize: 20, fontWeight: 'bold'}]}>
@@ -105,7 +115,7 @@ export default function HomeScreen() {
           <Pressable
             style={({pressed}) => [
               styles.iconContainer,
-              pressed && styles.iconContainerPressed,
+              { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
             ]}
             onPress={() => decrementCount()}>
             <Ionicons
@@ -116,7 +126,7 @@ export default function HomeScreen() {
           <Pressable
             style={({pressed}) => [
               styles.iconContainer,
-              pressed && styles.iconContainerPressed,
+              { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
             ]}
             onPress={() => incrementCountByTwo()}>
             <MaterialCommunityIcons
@@ -127,7 +137,7 @@ export default function HomeScreen() {
           <Pressable
             style={({pressed}) => [
               styles.iconContainer,
-              pressed && styles.iconContainerPressed,
+              { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
             ]}
             onPress={() => shareCounts()}>
             <Ionicons
@@ -138,8 +148,8 @@ export default function HomeScreen() {
           <Pressable
               style={({pressed}) => [
                 styles.iconContainer,
-                pressed && styles.iconContainerPressed,
-              ]}> 
+                { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
+              ]}>
           <Link href={{
             pathname: "/SaveCount",
             params: {value: count}
@@ -153,7 +163,7 @@ export default function HomeScreen() {
                        <Pressable
               style={({pressed}) => [
                 styles.iconContainer,
-                pressed && styles.iconContainerPressed,
+                { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
               ]}>
           <Link href="/GetCounts" asChild>
 
@@ -161,21 +171,21 @@ export default function HomeScreen() {
                 name="list-circle-outline"
                 style={styles.topToolbarIcons}
               />
-            
-          </Link> 
-          </Pressable> 
+
+          </Link>
+          </Pressable>
                      <Pressable
               style={({pressed}) => [
                 styles.iconContainer,
-                pressed && styles.iconContainerPressed,
-              ]}>        
+                { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
+              ]}>
           <Link href="/CounterSettings" asChild>
- 
+
               <Ionicons
                 name="settings-outline"
                 style={styles.topToolbarIcons}
               />
-            
+
           </Link>
           </Pressable>
         </View>
@@ -199,9 +209,9 @@ export default function HomeScreen() {
                   : Platform.OS === 'ios'
                   ? Dimensions.get('window').height - 320
                   : Dimensions.get('window').height - 380,
+                backgroundColor: pressed ? adjustBrightness(padColor, -20) : padColor,
               },
               styles.countPadButton,
-              pressed && styles.countPadButtonPressed,
             ]}
             onPressIn={onPressIn}
             onPressOut={onPressOut}
