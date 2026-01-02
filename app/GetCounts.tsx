@@ -1,6 +1,6 @@
 import { useTheme } from '@react-navigation/native';
-import { router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Alert,
   Animated,
@@ -22,6 +22,13 @@ const GetCountsScreen = () => {
   const [listData, updateListData] = useState([]);
   const [, setLoading] = useState<boolean>(true);
   const {colors} = useTheme();
+
+  // Refresh data when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+    }, [])
+  );
 
   useEffect(() => {
     getData();

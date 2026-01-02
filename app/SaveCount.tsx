@@ -95,7 +95,7 @@ const SaveCountScreen = () => {
       if (isEditMode) {
         setTimeout(() => {
           router.back();
-        }, 1000);
+        }, 500);
       }
     } catch (error: any) {
       Alert.alert('Error saving', error);
