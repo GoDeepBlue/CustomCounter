@@ -1,0 +1,60 @@
+# Snapfile - Fastlane Snapshot Configuration for Custom Counter
+
+# Devices to capture screenshots on (start with one for testing)
+devices([
+  "iPhone 16 Pro"
+])
+
+# Languages for screenshots
+languages([
+  "en-US"
+])
+
+# The name of the scheme which contains the UI Tests
+scheme("CustomCounterUITests")
+
+# Build configuration - use Release to disable debug warnings
+configuration("Release")
+
+# Where should the resulting screenshots be stored?
+output_directory("./fastlane/screenshots")
+
+# Clear all previously generated screenshots before creating new ones
+clear_previous_screenshots(true)
+
+# iOS version to use (match installed simulators)
+ios_version("18.5")
+
+# The bundle identifier of the app to uninstall (optional)
+app_identifier("com.DeepBlueDev.Counter")
+
+# Arguments to pass to the app on launch (disable debug warnings for clean screenshots)
+launch_arguments([
+  "-FASTLANE_SNAPSHOT", "YES",
+  "-RCTEnableInspector", "NO",
+  "-RCTDevMenu", "NO"
+])
+
+# Erase the simulator before running the snapshot
+erase_simulator(false)
+
+# Reinstall app before taking screenshots
+reinstall_app(false)
+
+# Stop running after first error
+stop_after_first_error(true)
+
+# Concurrent screenshots for faster execution
+concurrent_simulators(false)
+
+# Number of times to retry a failed test
+number_of_retries(0)
+
+# Workspace path
+workspace("./CustomCounter.xcworkspace")
+
+# Run both light mode and dark mode screenshot tests
+only_testing([
+  "CustomCounterUITests/CustomCounterUITests/testCaptureAllScreens",
+  "CustomCounterUITests/CustomCounterUITests/testCaptureDarkModeScreens"
+])

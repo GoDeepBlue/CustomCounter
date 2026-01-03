@@ -1,0 +1,11 @@
+# App Identifier (Bundle ID)
+app_identifier("com.DeepBlueDev.Counter")
+
+# Apple Developer Portal Team ID
+team_id("HYHV9563K3")
+
+# Uncomment and set your Apple ID email
+# apple_id("your@email.com")
+
+# App Store Connect Team ID (if different from Developer Portal)
+# itc_team_id("YOUR_ITC_TEAM_ID")

@@ -103,6 +103,8 @@ export default function HomeScreen() {
       <View style={{flex: 1}}>
         <View style={styles.topToolbar}>
           <Pressable
+            testID="resetButton"
+            accessibilityLabel="Reset count"
             style={({pressed}) => [
               styles.iconContainer,
               { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
@@ -113,6 +115,8 @@ export default function HomeScreen() {
             </Text>
           </Pressable>
           <Pressable
+            testID="decrementButton"
+            accessibilityLabel="Decrement count"
             style={({pressed}) => [
               styles.iconContainer,
               { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
@@ -124,6 +128,8 @@ export default function HomeScreen() {
             />
           </Pressable>
           <Pressable
+            testID="incrementByTwoButton"
+            accessibilityLabel="Increment count by two"
             style={({pressed}) => [
               styles.iconContainer,
               { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
@@ -135,6 +141,8 @@ export default function HomeScreen() {
             />
           </Pressable>
           <Pressable
+            testID="shareButton"
+            accessibilityLabel="Share count"
             style={({pressed}) => [
               styles.iconContainer,
               { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
@@ -146,6 +154,8 @@ export default function HomeScreen() {
             />
           </Pressable>
           <Pressable
+              testID="saveCountButton"
+              accessibilityLabel="Save count"
               style={({pressed}) => [
                 styles.iconContainer,
                 { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
@@ -160,32 +170,32 @@ export default function HomeScreen() {
               />
           </Link>
            </Pressable>
-                       <Pressable
+          <Pressable
+              testID="getCountsButton"
+              accessibilityLabel="View saved counts"
               style={({pressed}) => [
                 styles.iconContainer,
                 { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
               ]}>
           <Link href="/GetCounts" asChild>
-
               <Ionicons
                 name="list-circle-outline"
                 style={styles.topToolbarIcons}
               />
-
           </Link>
           </Pressable>
-                     <Pressable
+          <Pressable
+              testID="settingsButton"
+              accessibilityLabel="Settings"
               style={({pressed}) => [
                 styles.iconContainer,
                 { backgroundColor: pressed ? adjustBrightness(iconColor, -20) : iconColor },
               ]}>
           <Link href="/CounterSettings" asChild>
-
               <Ionicons
                 name="settings-outline"
                 style={styles.topToolbarIcons}
               />
-
           </Link>
           </Pressable>
         </View>
@@ -199,6 +209,8 @@ export default function HomeScreen() {
           marginTop: 50,
         }}>
           <Pressable
+            testID="counterPad"
+            accessibilityLabel="Tap to increment count"
             style={({pressed}) => [
               {
                 width: '100%',

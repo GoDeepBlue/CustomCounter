@@ -1,0 +1,73 @@
+# Fastfile for Custom Counter iOS App
+
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Capture screenshots for App Store"
+  lane :screenshots do
+    capture_screenshots(
+      workspace: "CustomCounter.xcworkspace",
+      scheme: "CustomCounterUITests"
+    )
+  end
+
+  desc "Build the app for testing"
+  lane :build_for_testing do
+    scan(
+      workspace: "CustomCounter.xcworkspace",
+      scheme: "Custom Counter",
+      build_for_testing: true,
+      derived_data_path: "./build"
+    )
+  end
+
+  desc "Run UI Tests"
+  lane :ui_tests do
+    scan(
+      workspace: "CustomCounter.xcworkspace",
+      scheme: "CustomCounterUITests",
+      devices: ["iPhone 16 Pro"]
+    )
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    build_app(
+      workspace: "CustomCounter.xcworkspace",
+      scheme: "Custom Counter",
+      export_method: "app-store"
+    )
+    upload_to_testflight(skip_waiting_for_build_processing: true)
+  end
+
+  desc "Build for App Store release"
+  lane :release do
+    build_app(
+      workspace: "CustomCounter.xcworkspace",
+      scheme: "Custom Counter",
+      export_method: "app-store"
+    )
+    upload_to_app_store(
+      skip_screenshots: true,
+      skip_metadata: true
+    )
+  end
+
+  desc "Upload screenshots to App Store Connect"
+  lane :upload_screenshots do
+    deliver(
+      skip_binary_upload: true,
+      skip_metadata: true,
+      overwrite_screenshots: true,
+      screenshots_path: "./fastlane/screenshots"
+    )
+  end
+
+  desc "Take screenshots and upload to App Store Connect"
+  lane :screenshots_and_upload do
+    screenshots
+    upload_screenshots
+  end
+
+end

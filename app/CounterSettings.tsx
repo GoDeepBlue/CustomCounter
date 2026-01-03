@@ -44,6 +44,8 @@ const CounterSettingsScreen = () => {
             <Text style={[styles.settingLabel, { color: colors.text }]}>Dark Mode</Text>
           </View>
           <Switch
+            testID="darkModeSwitch"
+            accessibilityLabel="Toggle dark mode"
             onValueChange={toggleTheme}
             value={mode === 'dark'}
             trackColor={{ false: '#767577', true: '#81b0ff' }}

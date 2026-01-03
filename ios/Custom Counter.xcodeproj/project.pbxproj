@@ -14,7 +14,19 @@
 		D96D2ECF8B4C5A65A0E8BFE1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 427907A3010446A4122C84DC /* PrivacyInfo.xcprivacy */; };
 		F106C3EFB757B405B1BCAEAC /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD6AD1685D46D9F5486D2CC /* ExpoModulesProvider.swift */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
+		UITEST001000000000000001 /* CustomCounterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = UITEST002000000000000001 /* CustomCounterUITests.swift */; };
+		UITEST001000000000000002 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = UITEST002000000000000002 /* SnapshotHelper.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		UITEST003000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = "Custom Counter";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		13B07F961A680F5B00A75B9A /* Custom Counter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Custom Counter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -30,6 +42,9 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = CustomCounter/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* CustomCounter-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CustomCounter-Bridging-Header.h"; path = "CustomCounter/CustomCounter-Bridging-Header.h"; sourceTree = "<group>"; };
+		UITEST002000000000000001 /* CustomCounterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCounterUITests.swift; sourceTree = "<group>"; };
+		UITEST002000000000000002 /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		UITEST002000000000000003 /* CustomCounterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CustomCounterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +53,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				89654E3D764D1DAF4B4B8ECD /* libPods-CustomCounter.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		UITEST006000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07FAE1A68108700A75B9A /* CustomCounter */,
+				UITEST004000000000000001 /* CustomCounterUITests */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -118,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* Custom Counter.app */,
+				UITEST002000000000000003 /* CustomCounterUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -129,6 +153,15 @@
 			);
 			name = Supporting;
 			path = CustomCounter/Supporting;
+			sourceTree = "<group>";
+		};
+		UITEST004000000000000001 /* CustomCounterUITests */ = {
+			isa = PBXGroup;
+			children = (
+				UITEST002000000000000001 /* CustomCounterUITests.swift */,
+				UITEST002000000000000002 /* SnapshotHelper.swift */,
+			);
+			path = CustomCounterUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,12 +189,31 @@
 			productReference = 13B07F961A680F5B00A75B9A /* Custom Counter.app */;
 			productType = "com.apple.product-type.application";
 		};
+		UITEST005000000000000001 /* CustomCounterUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = UITEST007000000000000001 /* Build configuration list for PBXNativeTarget "CustomCounterUITests" */;
+			buildPhases = (
+				UITEST006000000000000001 /* Sources */,
+				UITEST006000000000000002 /* Frameworks */,
+				UITEST006000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				UITEST008000000000000001 /* PBXTargetDependency */,
+			);
+			name = CustomCounterUITests;
+			productName = CustomCounterUITests;
+			productReference = UITEST002000000000000003 /* CustomCounterUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
@@ -183,6 +235,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* Custom Counter */,
+				UITEST005000000000000001 /* CustomCounterUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -196,6 +249,13 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				D96D2ECF8B4C5A65A0E8BFE1 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		UITEST006000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,7 +386,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		UITEST006000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				UITEST001000000000000001 /* CustomCounterUITests.swift in Sources */,
+				UITEST001000000000000002 /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		UITEST008000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13B07F861A680F5B00A75B9A /* Custom Counter */;
+			targetProxy = UITEST003000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
@@ -351,14 +428,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.3;
+				MARKETING_VERSION = 3.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.DeepBlueDev.CustomCounter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DeepBlueDev.Counter;
 				PRODUCT_NAME = "Custom Counter";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -389,14 +466,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.3;
+				MARKETING_VERSION = 3.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.DeepBlueDev.CustomCounter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DeepBlueDev.Counter;
 				PRODUCT_NAME = "Custom Counter";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -527,6 +604,57 @@
 			};
 			name = Release;
 		};
+		UITEST009000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HYHV9563K3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CustomCounterUITests;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DeepBlueDev.CustomCounterUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Custom Counter";
+			};
+			name = Debug;
+		};
+		UITEST009000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HYHV9563K3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CustomCounterUITests;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DeepBlueDev.CustomCounterUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Custom Counter";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -544,6 +672,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		UITEST007000000000000001 /* Build configuration list for PBXNativeTarget "CustomCounterUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				UITEST009000000000000001 /* Debug */,
+				UITEST009000000000000002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

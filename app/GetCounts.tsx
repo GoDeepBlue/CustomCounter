@@ -20,6 +20,7 @@ import { STORAGEKEY } from '../assets/constants/AsyncStorageKeys';
 
 const GetCountsScreen = () => {
   const [listData, updateListData] = useState([]);
+  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
   const [, setLoading] = useState<boolean>(true);
   const {colors} = useTheme();
 
@@ -34,18 +35,22 @@ const GetCountsScreen = () => {
     getData();
   }, []);
 
+  // Only save to storage after initial data has been loaded
+  // This prevents the race condition where empty [] overwrites saved data
   useEffect(() => {
-    AsyncStorage.setItem(STORAGEKEY, JSON.stringify(listData));
-  }, [listData]);
+    if (isDataLoaded) {
+      AsyncStorage.setItem(STORAGEKEY, JSON.stringify(listData));
+    }
+  }, [listData, isDataLoaded]);
 
   const getData = async () => {
     const resp: string | null = await AsyncStorage.getItem(STORAGEKEY);
     if (resp !== null) {
       const data = await JSON.parse(resp);
       updateListData(data);
-      //console.log('GetCounts ~ getData ~ data', data);
     }
     setLoading(false);
+    setIsDataLoaded(true);  // Mark data as loaded to enable storage sync
   };
 
   const closeRow = (rowMap, rowKey) => {
